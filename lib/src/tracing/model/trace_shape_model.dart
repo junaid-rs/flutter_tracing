@@ -1,7 +1,17 @@
+import 'package:tracing/src/tracing/model/trace_shape_options.dart';
 import 'package:tracing/tracing.dart';
 
-class TraceShapeModel{
-  final List<String> shapes;
+class TraceCharsModel{
+  final List<TraceCharModel> chars;
 
-  TraceShapeModel({required this.shapes,});
+  TraceCharsModel({required this.chars,});
+}
+
+class TraceCharModel {
+final  String char;
+ final TraceShapeOptions traceShapeOptions;
+  TraceCharModel({
+   required this.char,
+    this.traceShapeOptions= const TraceShapeOptions(),
+  });
 }

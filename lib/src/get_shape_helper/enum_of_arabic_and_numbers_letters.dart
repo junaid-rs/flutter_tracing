@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:tracing/src/colors/phonetics_color.dart';
-import 'package:tracing/src/enums/shape_enums.dart';
 import 'package:tracing/src/phontics_constants/arabic_shape_paths_blue_unit.dart';
 import 'package:tracing/src/phontics_constants/arabis_shape_paths.dart';
 import 'package:tracing/src/phontics_constants/english_shape_path2.dart';
@@ -76,7 +75,6 @@ class TypeExtensionTracking {
     }
   }
 
-
   PhonicsLetters _detectTheCurrentEnumFromPhonics({required String letter}) {
     if (letter == 'a') {
       return PhonicsLetters.a;
@@ -136,33 +134,59 @@ class TypeExtensionTracking {
   }
 
   List<TraceModel> getTracingData({
-     List<String>? shapes,
+    List<TraceCharModel>? chars,
     required StateOfTracing currentOfTracking,
-         List<MathShapes>? geometryShapes,
-
+    List<MathShapeWithOption>? geometryShapes,
   }) {
     List<TraceModel> tracingDataList = [];
 
     if (currentOfTracking == StateOfTracing.traceShapes) {
-      tracingDataList.addAll(getListOfTracingDataMathShapes(shapes: geometryShapes!));
+      tracingDataList
+          .addAll(getListOfTracingDataMathShapes(shapes: geometryShapes!));
     } else if (currentOfTracking == StateOfTracing.traceWords) {
-      tracingDataList.addAll(getTraceWords(word: shapes!.first));
+      // tracingDataList.addAll(getTraceWords(word: shapes!.first));
     } else if (currentOfTracking == StateOfTracing.chars) {
-      for (var char in shapes!) {
+      for (var char in chars!) {
+        final letters = char.char;
+
         // Detect the type of letter and add the corresponding tracing data
-        if (_isArabicCharacter(char)) {
-          tracingDataList.addAll(getTracingDataArabic(letter: char));
-        } else if (_isNumber(char)) {
-          tracingDataList.addAll(getTracingDataNumbers(number: char));
-        } else if (_isPhonicsCharacter(char)) {
+        if (_isArabicCharacter(letters)) {
           tracingDataList
-              .addAll(getTracingDataPhonics(letter: char.toLowerCase()));
-        } else if (_isUpperCasePhonicsCharacter(char)) {
-          final uppers = getTracingDataPhonicsUp(letter: char.toLowerCase());
+              .add(getTracingDataArabic(letter: letters).first.copyWith(
+                    innerPaintColor: char.traceShapeOptions.innerPaintColor,
+                    outerPaintColor: char.traceShapeOptions.outerPaintColor,
+                    indexColor: char.traceShapeOptions.indexColor,
+                    dottedColor: char.traceShapeOptions.dottedColor,
+                  ));
+        } else if (_isNumber(letters)) {
+          tracingDataList
+              .add(getTracingDataNumbers(number: letters).first.copyWith(
+                    innerPaintColor: char.traceShapeOptions.innerPaintColor,
+                    outerPaintColor: char.traceShapeOptions.outerPaintColor,
+                    indexColor: char.traceShapeOptions.indexColor,
+                    dottedColor: char.traceShapeOptions.dottedColor,
+                  ));
+        } else if (_isPhonicsCharacter(letters)) {
+          tracingDataList.add(
+              getTracingDataPhonics(letter: letters.toLowerCase())
+                  .first
+                  .copyWith(
+                    innerPaintColor: char.traceShapeOptions.innerPaintColor,
+                    outerPaintColor: char.traceShapeOptions.outerPaintColor,
+                    indexColor: char.traceShapeOptions.indexColor,
+                    dottedColor: char.traceShapeOptions.dottedColor,
+                  ));
+        } else if (_isUpperCasePhonicsCharacter(letters)) {
+          final uppers = getTracingDataPhonicsUp(letter: letters.toLowerCase());
           final newBigSizedUppers = uppers
               .map((up) => up.copyWith(letterViewSize: Size(300, 300)))
               .toList();
-          tracingDataList.addAll(newBigSizedUppers);
+          tracingDataList.add(newBigSizedUppers.first.copyWith(
+            innerPaintColor: char.traceShapeOptions.innerPaintColor,
+            outerPaintColor: char.traceShapeOptions.outerPaintColor,
+            indexColor: char.traceShapeOptions.indexColor,
+            dottedColor: char.traceShapeOptions.dottedColor,
+          ));
         } else {
           throw Exception('Unsupported character type for tracing.');
         }
@@ -400,12 +424,17 @@ class TypeExtensionTracking {
   }
 
   List<TraceModel> getListOfTracingDataMathShapes(
-      {required List<MathShapes> shapes}) {
+      {required List<MathShapeWithOption> shapes}) {
     List<TraceModel> traceModels = [];
 
     // Iterate over each MathShapes enum and generate a TraceModel for it
-    for (var shapeEnum in shapes) {
-      traceModels.addAll(getTracingDataMathShapes(currentLetter: shapeEnum));
+    for (var sh in shapes) {
+      traceModels.add(getTracingDataMathShapes(currentLetter: sh.shape).first.copyWith(
+            innerPaintColor: sh.traceShapeOptions.innerPaintColor,
+            outerPaintColor: sh.traceShapeOptions.outerPaintColor,
+            indexColor: sh.traceShapeOptions.indexColor,
+            dottedColor: sh.traceShapeOptions.dottedColor,
+          ));
     }
 
     return traceModels; // Return the list of enums
@@ -464,7 +493,7 @@ class TypeExtensionTracking {
 
       case MathShapes.triangle1:
         return [
-                TraceModel(
+          TraceModel(
               letterViewSize: Size(150, 150),
               poitionIndexPath: const Size(-5, 10),
               poitionDottedPath: const Size(0, 3),

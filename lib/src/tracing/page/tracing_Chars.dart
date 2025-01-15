@@ -10,7 +10,7 @@ import '../manager/tracing_cubit.dart';
 
 class TracingCharsGame extends StatefulWidget {
   const TracingCharsGame({super.key, required this.traceShapeModel, required this.tracingListener,  this.loadingIndictor=const CircularProgressIndicator(), });
-  final List<TraceShapeModel> traceShapeModel;
+  final List<TraceCharsModel> traceShapeModel;
   final  Future<void> Function(BuildContext, TracingState) tracingListener;
   final Widget loadingIndictor;
   @override

@@ -32,10 +32,10 @@ class _MyAppState extends State<MyApp> {
                   child: TracingGeometricShapesGame(
                     traceGeoMetricShapeModels: [
                       TraceGeoMetricShapeModel(shapes: [
-                        MathShapes.triangle1,
-                        MathShapes.triangle2,
-                        MathShapes.triangle3,
-                        MathShapes.triangle4
+                        MathShapeWithOption(
+                            shape: MathShapes.rectangle,
+                            traceShapeOptions: TraceShapeOptions(
+                                innerPaintColor: Colors.orange))
                       ]),
                     ],
                     tracingListener: (buildContext, tracingState) async {
@@ -50,22 +50,27 @@ class _MyAppState extends State<MyApp> {
                   ),
                 ),
 
-                // Expanded(
-                //   child: TracingCharsGame(
-                //     traceShapeModel: [
-                //       TraceShapeModel(shapes: ['S', 'a', 'Q']),
-                //     ],
-                //     tracingListener: (buildContext, tracingState) async {
-                //       if (tracingState.drawingStates ==
-                //           DrawingStates.finishedCurrentScreen) {
-                //         await Future.delayed(Duration(seconds: 1));
-                //       } else if (tracingState.drawingStates ==
-                //           DrawingStates.gameFinished) {
-                //         print('finished the game');
-                //       }
-                //     },
-                //   ),
-                // ),
+                Expanded(
+                  child: TracingCharsGame(
+                    traceShapeModel: [
+                      TraceCharsModel(chars: [
+                        TraceCharModel(
+                            char: 's',
+                            traceShapeOptions: TraceShapeOptions(
+                                innerPaintColor: Colors.orange))
+                      ]),
+                    ],
+                    tracingListener: (buildContext, tracingState) async {
+                      if (tracingState.drawingStates ==
+                          DrawingStates.finishedCurrentScreen) {
+                        await Future.delayed(Duration(seconds: 1));
+                      } else if (tracingState.drawingStates ==
+                          DrawingStates.gameFinished) {
+                        print('finished the game');
+                      }
+                    },
+                  ),
+                ),
                 // TracingWordGame(
                 //   words: ['Flutter'],
                 //   tracingListener: (buildContext, tracingState) async {

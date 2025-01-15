@@ -20,7 +20,7 @@ part 'tracing_state.dart';
 
 class TracingCubit extends Cubit<TracingState> {
   TracingCubit({
-    List<TraceShapeModel>? traceShapeModel,
+    List<TraceCharsModel>? traceShapeModel,
     required StateOfTracing stateOfTracing,
     List<TraceGeoMetricShapeModel>? traceGeoMetricShapeModel,
   }) : super(TracingState(
@@ -52,9 +52,9 @@ class TracingCubit extends Cubit<TracingState> {
             geometryShapes: state.stateOfTracing == StateOfTracing.traceShapes
                 ? state.traceGeoMetricShapes![state.index].shapes
                 : null,
-            shapes: state.stateOfTracing == StateOfTracing.chars ||
+            chars: state.stateOfTracing == StateOfTracing.chars ||
                     state.stateOfTracing == StateOfTracing.traceWords
-                ? state.traceShapeModel![state.index].shapes
+                ? state.traceShapeModel![state.index].chars
                 : null,
             currentOfTracking: state.stateOfTracing)));
     await loadAssets();

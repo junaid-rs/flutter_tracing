@@ -11,7 +11,7 @@ enum DrawingStates {
 
 // ignore: must_be_immutable
 class TracingState extends Equatable {
-  final List<TraceShapeModel>? traceShapeModel;
+  final List<TraceCharsModel>? traceShapeModel;
   final List<TraceGeoMetricShapeModel>? traceGeoMetricShapes;
 
   final List<TraceModel> traceLetter;
@@ -20,7 +20,7 @@ class TracingState extends Equatable {
   final int activeIndex; // Track the active letter index
   final int index;
   final Size viewSize;
-        final StateOfTracing stateOfTracing;
+  final StateOfTracing stateOfTracing;
  
   TracingState({  
       required this.stateOfTracing,
@@ -36,7 +36,7 @@ class TracingState extends Equatable {
   });
 
   TracingState copyWith({
-    List<TraceShapeModel>? traceShapeModel,
+    List<TraceCharsModel>? traceShapeModel,
     Size? viewSize,
     DrawingStates? drawingStates,
     int? index,

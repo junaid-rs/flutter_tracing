@@ -24,10 +24,10 @@ class _TracingWordGameState extends State<TracingWordGame> {
   @override
   void initState() {
     super.initState();
-    tracingCubit = TracingCubit(
-      stateOfTracing:StateOfTracing.traceWords ,
-      traceShapeModel: widget.words.map((e)=>TraceShapeModel(shapes: [e])).toList(),
-    );
+    // tracingCubit = TracingCubit(
+    //   stateOfTracing:StateOfTracing.traceWords ,
+    //   traceShapeModel: widget.words.map((e)=>TraceShapeModel(shapes: [e])).toList(),
+    // );
   }
 
   @override
