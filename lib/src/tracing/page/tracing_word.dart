@@ -70,7 +70,6 @@ class _TracingWordGameState extends State<TracingWordGame> {
 
                         // margin: REdgeInsets.only(left: 0),
                         // color: Colors.amber,
-                        color: Colors.red,
                         child: Center(
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
