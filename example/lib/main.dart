@@ -20,21 +20,24 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    const textStyle = TextStyle(fontSize: 25);
-    const spacerSmall = SizedBox(height: 10);
+
     return MaterialApp(
       home: Scaffold(
           appBar: AppBar(
             title: const Text('Native Packages'),
           ),
           body: Container(
-            height: 400,
-            width: 100,
-            child: TracingGame(
-              traceShapeModel: [
-                TraceShapeModel(
-                    shape: '1234', stateOfTracing: StateOfTracing.math)
-              ],
+         
+            child: TracingWordGame(
+              words: [
+                'i Love G'
+              ], tracingListener: (buildContext , tracingState )async {
+                                 if (tracingState.drawingStates == DrawingStates.finishedCurrentScreen) {
+                                  await Future.delayed(Duration(seconds: 1));
+                                 }else     if (tracingState.drawingStates == DrawingStates.gameFinished) {
+                                  print('finished the game');
+                                 }
+                },
             ),
           )),
     );

@@ -4,12 +4,15 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tracing/src/tracing/phonetics_paint_widget/phonetics_painter.dart';
+import 'package:tracing/tracing.dart';
 
 import '../manager/tracing_cubit.dart';
 
 class TracingWordGame extends StatefulWidget {
-  const TracingWordGame({super.key});
-
+  const TracingWordGame({super.key, required this.words, required this.tracingListener,  this.loadingIndictor=const CircularProgressIndicator(), });
+  final List<String> words;
+  final  Future<void> Function(BuildContext, TracingState) tracingListener;
+  final Widget loadingIndictor;
   @override
   State<StatefulWidget> createState() => _TracingWordGameState();
 }
@@ -20,38 +23,38 @@ class _TracingWordGameState extends State<TracingWordGame> {
   @override
   void initState() {
     super.initState();
-    tracingCubit = context.read<TracingCubit>();
-
+    tracingCubit = TracingCubit(
+      stateOfTracing:StateOfTracing.traceWords ,
+      traceShapeModel: widget.words.map((e)=>TraceShapeModel(shapes: [e])).toList(),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<TracingCubit, TracingState>(
-      listener: (context, stateOfGame) async {
-        if (stateOfGame.drawingStates == DrawingStates.finishedCurrentPart) {
-
-        }
-      },
-      builder: (context, state) {
-        if (state.drawingStates == DrawingStates.loading ||
-            state.drawingStates == DrawingStates.initial) {
-          return Container();
-        }
-
-        double contWidth = 0;
-        double contHeight = 0;
-        for (var e in state.letterPathsModels) {
-          if (e.viewSize.height > contHeight) {
-            contHeight = e.viewSize.height;
+    // Adjust bottom padding based on platform and navigation bar presence
+    return BlocProvider(
+        create: (context) => tracingCubit,
+        child: BlocConsumer<TracingCubit, TracingState>(
+            listener:(context, stateOfGame)async {
+           await   widget.tracingListener(context,stateOfGame);
+                 if (stateOfGame.drawingStates == DrawingStates.finishedCurrentScreen) {
+     
+                if (context.mounted) {
+                  
+                  context.read<TracingCubit>().updateIndex();
+                
+              
+      
+                }}
+            }, builder: (context, state) {
+          if (state.drawingStates == DrawingStates.loading ||
+              state.drawingStates == DrawingStates.initial) {
+            return widget. loadingIndictor;
           }
-          contWidth = e.viewSize.width + contWidth;
-        }
-        log(contWidth.toString());
-        final s = MediaQuery.sizeOf(context).width;
+  
+
         return Container(
-          // color: Colors.orange,
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width / 1.1,
+          
           child: FittedBox(
             child: Center(
               child: Row(
@@ -67,7 +70,7 @@ class _TracingWordGameState extends State<TracingWordGame> {
 
                         // margin: REdgeInsets.only(left: 0),
                         // color: Colors.amber,
-                        // color: Colors.red,
+                        color: Colors.red,
                         child: Center(
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
@@ -76,8 +79,7 @@ class _TracingWordGameState extends State<TracingWordGame> {
                             children: List.generate(
                               state.letterPathsModels.length,
                               (index) {
-                                log(state.letterPathsModels[index].viewSize
-                                    .toString());
+                            
                                 return Container(
                                   height: state
                                       .letterPathsModels[index].viewSize.width,
@@ -95,24 +97,15 @@ class _TracingWordGameState extends State<TracingWordGame> {
                                     fit: BoxFit.contain,
                                     child: GestureDetector(
                                       onPanStart: (details) {
-                                        log('debged start');
-                                        debugPrint(index.toString());
-                                        debugPrint(
-                                            state.activeIndex.toString());
-                                        if (index == state.activeIndex &&
-                                            (state.index > 0 
-                                               )) {
-                                          print('sssss');
+                                    
+                                        if (index == state.activeIndex) {
                                           tracingCubit.handlePanStart(
                                               details.localPosition);
                                         }
                                       },
                                       onPanUpdate: (details) {
-                                        log('debged updated');
 
-                                        if (index == state.activeIndex &&
-                                            (state.index > 0 )) {
-                                          print('222');
+                                        if (index == state.activeIndex) {
 
                                           tracingCubit.handlePanUpdate(
                                               details.localPosition);
@@ -196,7 +189,7 @@ class _TracingWordGameState extends State<TracingWordGame> {
                                                   .anchorPos!
                                                   .dx,
                                               child: Image.asset(
-                                                                  'packages/tracing/assets/images/position_2_finger',
+                                          'packages/tracing/assets/images/position_2_finger.png',
 
                                                 height: 50,
                                               ),
@@ -218,7 +211,7 @@ class _TracingWordGameState extends State<TracingWordGame> {
             ),
           ),
         );
-      },
+      }),
     );
   }
 }

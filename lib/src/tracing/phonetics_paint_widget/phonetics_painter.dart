@@ -56,10 +56,7 @@ class PhoneticsPainter extends CustomPainter {
 
     // Draw the letter path with color
     canvas.drawPath(letterImage, letterPaint);
-    // print('sssss');
-    // print(indexColor);
-    // print(dottedColor);
-
+ 
     if (dottedPath != null) {
       final debugPaint = Paint()
         ..color = dottedColor

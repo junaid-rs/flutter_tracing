@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:math' as math;
 
 import 'package:bloc/bloc.dart';
@@ -17,37 +18,43 @@ part 'tracing_state.dart';
 class TracingCubit extends Cubit<TracingState> {
   TracingCubit({
     required List<TraceShapeModel> traceShapeModel,
+        required StateOfTracing stateOfTracing,
+
   }) : super(TracingState(
           traceShapeModel: traceShapeModel,
           index: 0,
-          trace: StateOfTracing.math,
+          stateOfTracing: stateOfTracing,
           traceLetter: const [],
           letterPathsModels: const [],
         )) {
     updateTheTraceLetter();
   }
   updateIndex() {
+   
     int index = state.index;
-    index++;
+        index++;
+
+    if(index<state.traceShapeModel.length){
+
+    
     emit(state.copyWith(index: index, drawingStates: DrawingStates.loaded));
-    updateTheTraceLetter();
+    updateTheTraceLetter();}
   }
 
   updateTheTraceLetter() async {
     emit(state.clearData());
     emit(state.copyWith(
         activeIndex: 0,
-        trace: state.trace,
+        stateOfTracing: state.stateOfTracing,
         traceLetter: TypeExtensionTracking().getTracingData(
-            letter: state.traceShapeModel[state.index].shape,
+            shapes: state.traceShapeModel[state.index].shapes,
             currentOfTracking:
-                state.traceShapeModel[state.index].stateOfTracing)));
+                state.stateOfTracing)));
     await loadAssets();
   }
 
   final viewSize = const Size(200, 200);
   Future<void> loadAssets() async {
-    print(state.traceLetter.length.toString());
     emit(state.copyWith(drawingStates: DrawingStates.loading));
 
     List<LetterPathsModel> model = [];
@@ -383,7 +390,7 @@ class TracingCubit extends Cubit<TracingState> {
           activeIndex: (state.activeIndex + 1),
           letterPathsModels: state.letterPathsModels,
         ));
-      } else if (state.index == state.traceShapeModel.length) {
+      } else if (state.index == state.traceShapeModel.length-1) {
         emit(state.copyWith(
             activeIndex: (state.activeIndex),
             letterPathsModels: state.letterPathsModels,
@@ -392,7 +399,7 @@ class TracingCubit extends Cubit<TracingState> {
         emit(state.copyWith(
             activeIndex: (state.activeIndex),
             letterPathsModels: state.letterPathsModels,
-            drawingStates: DrawingStates.finishedCurrentPart));
+            drawingStates: DrawingStates.finishedCurrentScreen));
       }
     }
   }

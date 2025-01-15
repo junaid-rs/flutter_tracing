@@ -29,9 +29,7 @@ class _TraceShapesGameState extends State<TraceShapesGame> {
   Widget build(BuildContext context) {
     return BlocConsumer<TracingCubit, TracingState>(
       listener: (context, stateOfGame) async {
-        if (stateOfGame.drawingStates == DrawingStates.finishedCurrentPart) {
-       // finish part
-        }
+    
       },
       builder: (context, state) {
         if (state.drawingStates == DrawingStates.loading ||
@@ -101,9 +99,6 @@ class _TraceShapesGameState extends State<TraceShapesGame> {
         fit: BoxFit.contain,
         child: GestureDetector(
           onPanStart: (details) {
-            log('debged start');
-            debugPrint(index.toString());
-            debugPrint(state.activeIndex.toString());
             if (index == state.activeIndex &&
                 state.index > 0) {
               tracingCubit.handlePanStart(details.localPosition);

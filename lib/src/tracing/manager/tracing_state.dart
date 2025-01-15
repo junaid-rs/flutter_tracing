@@ -6,7 +6,7 @@ enum DrawingStates {
   loading,
   loaded,
   gameFinished,
-  finishedCurrentPart
+  finishedCurrentScreen
 }
 
 // ignore: must_be_immutable
@@ -19,14 +19,15 @@ class TracingState extends Equatable {
   final int activeIndex; // Track the active letter index
   final int index;
   final Size viewSize;
-  final StateOfTracing trace;
+        final StateOfTracing stateOfTracing;
+ 
+  TracingState({  
+      required this.stateOfTracing,
 
-  TracingState({
     required this.traceShapeModel,
     this.viewSize = const Size(0, 0),
     this.letterPathsModels = const [],
     required this.traceLetter,
-    required this.trace,
     this.drawingStates = DrawingStates.initial,
     required this.index,
     this.activeIndex = 0,
@@ -40,13 +41,13 @@ class TracingState extends Equatable {
     // Updated to ui.Image
     List<LetterPathsModel>? letterPathsModels,
     List<TraceModel>? traceLetter,
-    StateOfTracing? trace,
+    StateOfTracing? stateOfTracing,
     int? activeIndex,
   }) {
     return TracingState(
       traceShapeModel: traceShapeModel ?? this.traceShapeModel,
       index: index ?? this.index,
-      trace: trace ?? this.trace,
+      stateOfTracing: stateOfTracing ?? this.stateOfTracing,
       letterPathsModels: letterPathsModels ?? this.letterPathsModels,
       traceLetter: traceLetter ?? this.traceLetter,
       activeIndex: activeIndex ?? this.activeIndex,
@@ -59,7 +60,7 @@ class TracingState extends Equatable {
       traceShapeModel: traceShapeModel,
       letterPathsModels: letterPathsModels,
       drawingStates: DrawingStates.initial,
-      trace: trace,
+      stateOfTracing: stateOfTracing,
       index: index,
       traceLetter: traceLetter,
     );
@@ -69,7 +70,7 @@ class TracingState extends Equatable {
   List<Object?> get props => [traceShapeModel,
         drawingStates,
         viewSize,
-        trace,
+        stateOfTracing,
         index,
         traceLetter,
         letterPathsModels.map((model) => model.copyWith()).toList(),

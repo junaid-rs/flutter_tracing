@@ -80,13 +80,10 @@ enum PhonicsLetters {
 }
 
 enum StateOfTracing {
-  arabic,
-  phonics,
-  math,
-  phonicsUp,
-  practicalLife,
+
+  chars,
   traceWords,
-  traceShapes
+  traceShapes,
 }
 
 class TypeExtensionTracking {
@@ -166,8 +163,7 @@ class TypeExtensionTracking {
   }
 
   PhonicsLetters _detectTheCurrentEnumFromPhonics({required String letter}) {
-    print('/////');
-    print(letter.toString());
+
     if (letter == 'a') {
       return PhonicsLetters.a;
     } else if (letter == 'q') {
@@ -221,40 +217,78 @@ class TypeExtensionTracking {
     } else if (letter == 'm') {
       return PhonicsLetters.m;
     } else {
-      return PhonicsLetters.m;
+      throw Exception('Unsupported character type for tracing.');
     }
   }
 
+
+List<TraceModel> getTracingData({
+  required List<String> shapes,
+  required StateOfTracing currentOfTracking,
+  
+}) {
+  List<TraceModel> tracingDataList = [];
+
+  if (currentOfTracking == StateOfTracing.traceShapes) {
+    tracingDataList.addAll(getListOfTracingDataMathShapes(shapes: shapes));
+  } else if (currentOfTracking == StateOfTracing.traceWords) {
+    tracingDataList.addAll(getTraceWords(word: shapes.first));
+  } else if (currentOfTracking == StateOfTracing.chars) {
+    for (var char in shapes) {
+ // Detect the type of letter and add the corresponding tracing data
+    if (_isArabicCharacter(char)) {
+      tracingDataList.addAll(getTracingDataArabic(letter: char));
+    } else if (_isNumber(char)) {
+      tracingDataList.addAll(getTracingDataNumbers(number: char));
+    } else if (_isPhonicsCharacter(char)) {
+      tracingDataList.addAll(getTracingDataPhonics(letter: char.toLowerCase())
+      );
+    } else if (_isUpperCasePhonicsCharacter(char)) {
+      final uppers=getTracingDataPhonicsUp(letter: char.toLowerCase());
+    final newBigSizedUppers= uppers.map((up)=>up.copyWith(letterViewSize: Size(300, 300))).toList();
+      tracingDataList.addAll(newBigSizedUppers);
+    } else {
+      throw Exception('Unsupported character type for tracing.');
+    }
+    }
+   
+  } else {
+    throw Exception('Unknown StateOfTracing value');
+  }
+
+  return tracingDataList; // Return the combined tracing data list
+}
+
+// Helper functions to detect the type of letter
+
+bool _isArabicCharacter(String letter) {
+  // Check if the letter is an Arabic character (Unicode range)
+  return RegExp(r'[\u0600-\u06FF]').hasMatch(letter);
+}
+
+bool _isNumber(String letter) {
+  // Check if the letter is a number
+  return RegExp(r'^(10|[0-9])$').hasMatch(letter);
+}
+
+bool _isPhonicsCharacter(String letter) {
+  // Check if the letter is a valid phonics character (assuming it's A-Z or a-z)
+  return RegExp(r'^[a-z]$').hasMatch(letter);
+}
+
+bool _isUpperCasePhonicsCharacter(String letter) {
+  // Check if the letter is an uppercase phonics character
+  return RegExp(r'^[A-Z]$').hasMatch(letter);
+}
+
+
   List<TraceModel> getTracingDataNumbers({required String number}) {
-    print('getTracingDataNumbers:$number');
     List<TraceModel> listOfTraceModel = [];
 
-    for (int i = 0; i < number.length; i++) {
-      switch (number[i]) {
-        case '1':
-          if (number[i] == '1' && number[i + 1] == '0') {
-            // 10 condition
-            listOfTraceModel.add(
-              TraceModel(
-                  poitionIndexPath: const Size(-28, -90),
-                  poitionDottedPath: const Size(-3, 0),
-                  scaledottedPath: .9,
-                  scaleIndexPath: .55,
-                  dottedColor: AppColorPhonetics.phonticGrey,
-                  indexColor: AppColorPhonetics.white,
-                  dottedPath: NumberSvgs.shapeNumber10Dotted,
-                  indexPath: NumberSvgs.shapeNumber10Index,
-                  letterPath: NumberSvgs.shapeNumber10,
-                  indexPathPaintStyle: PaintingStyle.fill,
-                  strokeWidth: 45,
-                  pointsJsonFile: ShapePointsManger.number10,
-                  innerPaintColor: AppColorPhonetics.lightBlueColor6,
-                  outerPaintColor: AppColorPhonetics.lightBlueColor5),
-            );
-
-            break;
-          } else
-            listOfTraceModel.add(TraceModel(
+ 
+      switch (number) {
+                case '1':
+           listOfTraceModel.add(TraceModel(
                 poitionIndexPath: const Size(-12, -85),
                 poitionDottedPath: const Size(-31, 10),
                 scaledottedPath: .8,
@@ -269,7 +303,8 @@ class TypeExtensionTracking {
                 pointsJsonFile: ShapePointsManger.number1,
                 innerPaintColor: AppColorPhonetics.lightBlueColor6,
                 outerPaintColor: AppColorPhonetics.lightBlueColor5));
-          break;
+            break;
+    
         case '2':
           listOfTraceModel.add(TraceModel(
               poitionIndexPath: const Size(-50, 20),
@@ -431,7 +466,6 @@ class TypeExtensionTracking {
                 outerPaintColor: AppColorPhonetics.lightBlueColor5),
           );
         case '0':
-          if (number.length < 2 && number[number.length - 1] == '0')
             listOfTraceModel.add(TraceModel(
                 poitionIndexPath: const Size(-10, -90),
                 poitionDottedPath: const Size(-5, -5),
@@ -448,32 +482,32 @@ class TypeExtensionTracking {
                 outerPaintColor: AppColorPhonetics.lightBlueColor5));
           break;
       }
-    }
+    
 
     return listOfTraceModel;
   }
 
-  List<TraceModel> getTracingData(
-      {required String letter, required StateOfTracing currentOfTracking}) {
-    if (currentOfTracking == StateOfTracing.traceShapes) {
-      return getTracingDataMathShapes(shape: letter);
-    } else if (currentOfTracking == StateOfTracing.traceWords) {
-      return getTraceWords(word: letter);
-    } else if (currentOfTracking == StateOfTracing.arabic) {
-      return getTracingDataArabic(letter: letter);
-    } else if (currentOfTracking == StateOfTracing.math) {
-      return getTracingDataNumbers(number: letter);
-    } else if (currentOfTracking == StateOfTracing.phonics) {
-      return getTracingDataPhonics(letter: letter.toLowerCase());
-    } else if (currentOfTracking == StateOfTracing.phonicsUp) {
-      return getTracingDataPhonicsUp(letter: letter.toLowerCase());
-    } else {
-      return [];
-    }
+
+List<TraceModel> getListOfTracingDataMathShapes({required List<String> shapes}) {
+  List<MathShapes> shapesEnumList = [];
+  List<TraceModel> traceModels = [];
+
+  for (var shape in shapes) {
+    MathShapes shapeEnum = _detectTheCurrentEnumMathShapes(shape: shape);
+    shapesEnumList.add(shapeEnum);
   }
 
-  List<TraceModel> getTracingDataMathShapes({required String shape}) {
-    MathShapes currentLetter = _detectTheCurrentEnumMathShapes(shape: shape);
+  // Iterate over each MathShapes enum and generate a TraceModel for it
+  for (var shapeEnum in shapesEnumList) {
+        traceModels.addAll(getTracingDataMathShapes(currentLetter: shapeEnum));
+
+  }
+
+  return traceModels; // Return the list of enums
+}
+
+
+  List<TraceModel> getTracingDataMathShapes({required    MathShapes currentLetter}) {
 
     switch (currentLetter) {
       case MathShapes.circle:
@@ -614,79 +648,54 @@ class TypeExtensionTracking {
               outerPaintColor: Colors.transparent),
         ];
 
-      default:
-        return [
-          TraceModel(
-              poitionIndexPath: const Size(5, 0),
-              poitionDottedPath: const Size(0, 15),
-              scaledottedPath: .75,
-              scaleIndexPath: 1.2,
-              indexPathPaintStyle: PaintingStyle.stroke,
-              dottedPath: ArabicShapePathBluUnit.heh3Dotted,
-              dottedColor: AppColorPhonetics.white,
-              indexColor: AppColorPhonetics.phonticGrey,
-              indexPath: ArabicShapePathBluUnit.heh3Index,
-              letterPath: ArabicShapePathBluUnit.heh3Shape,
-              strokeWidth: 60,
-              strokeIndex: 1,
-              pointsJsonFile: ShapePointsManger.heh3,
-              innerPaintColor: AppColorPhonetics.lightBlueColor4,
-              outerPaintColor: AppColorPhonetics.lightBlueColor2),
-          TraceModel(
-              poitionIndexPath: const Size(-5, -15),
-              poitionDottedPath: const Size(0, 0),
-              scaledottedPath: .75,
-              scaleIndexPath: 1.2,
-              strokeIndex: 1,
-              disableDivededStrokes: true,
-              strokeWidth: 50,
-              dottedPath: ArabicShapePathBluUnit.heh4Dotted,
-              dottedColor: AppColorPhonetics.white,
-              indexColor: AppColorPhonetics.phonticGrey,
-              indexPath: ArabicShapePathBluUnit.heh4Index,
-              letterPath: ArabicShapePathBluUnit.heh4Shape,
-              pointsJsonFile: ShapePointsManger.heh4,
-              innerPaintColor: AppColorPhonetics.lightBlueColor4,
-              outerPaintColor: AppColorPhonetics.lightBlueColor2),
-        ];
+
     }
   }
 
-  List<TraceModel> getTraceWords(
-      {required String word, Size sizeOfLetter = const Size(500, 500)}) {
-    List<TraceModel> letters = [];
-    for (var i = 0; i < word.length; i++) {
-      if (word[i] != ' ') {
-        bool isNextSpace = (i + 1 < word.length) &&
-            word[i + 1] == ' '; // Check if the next character is a space
+List<TraceModel> getTraceWords({
+  required String word,
+  Size sizeOfLetter = const Size(500, 500),
+}) {
+  List<TraceModel> letters = [];
+  int i = 0;
 
-        if (i == 0) {
-          letters.add(
-            getTracingDataPhonicsUp(
-              letter: word[i],
-            ).first.copyWith(
-                  isSpace: isNextSpace,
-                  letterViewSize: sizeOfLetter,
-                  dottedColor: AppColorPhonetics.white,
-                  indexColor: AppColorPhonetics.phonticGrey,
-                ),
-          );
-        } else {
-          letters.add(
-            getTracingDataPhonics(
-              letter: word[i],
-            ).first.copyWith(
-                  isSpace: isNextSpace,
-                  letterViewSize: sizeOfLetter,
-                  dottedColor: AppColorPhonetics.white,
-                  indexColor: AppColorPhonetics.phonticGrey,
-                ),
-          );
-        }
+  while (i < word.length) {
+    if (word[i] == '1' && i + 1 < word.length && word[i + 1] == '0') {
+      // Check if current character is '1' and next is '0' (treat it as 10)
+      if (word[i] == '1' && word[i + 1] == '0') {
+        letters.add(getTracingDataNumbers(number: '10').first.copyWith(
+          isSpace: (i + 2 < word.length && word[i + 2] == ' '), // Check if next character is a space
+        ));
+        i += 2; // Skip the next character (i + 1) since we've handled '10'
+        continue;
       }
     }
-    return letters;
+
+    bool isNextSpace = (i + 1 < word.length) && word[i + 1] == ' '; // Check if the next character is a space
+
+    if (_isArabicCharacter(word[i])) {
+      letters.add(getTracingDataArabic(letter: word[i]).first.copyWith(
+        isSpace: isNextSpace,
+      ));
+    } else if (_isNumber(word[i])) {
+      letters.add(getTracingDataNumbers(number: word[i]).first.copyWith(
+        isSpace: isNextSpace,
+      ));
+    } else if (_isPhonicsCharacter(word[i])) {
+      letters.add(getTracingDataPhonics(letter: word[i].toLowerCase()).first.copyWith(
+        isSpace: isNextSpace,
+      ));
+    } else if (_isUpperCasePhonicsCharacter(word[i])) {
+      final uppers = getTracingDataPhonicsUp(letter: word[i].toLowerCase());
+      final newBigSizedUppers = uppers.map((up) => up.copyWith(letterViewSize: Size(300, 300))).first;
+      letters.add(newBigSizedUppers.copyWith(isSpace: isNextSpace));
+    }
+    
+    i++; // Move to the next character
   }
+  
+  return letters;
+}
 
   List<TraceModel> getTracingDataArabic({required String letter}) {
     ArabicLetters currentLetter = _detectTheCurrentEnum(letter: letter);
@@ -2157,9 +2166,7 @@ class TypeExtensionTracking {
               pointsJsonFile: ShapePointsManger.lUpperShape,
               innerPaintColor: AppColorPhonetics.lightBlueColor4,
               outerPaintColor: AppColorPhonetics.lightBlueColor2),
-          getTracingDataPhonics(
-                  letter: letter, sizeOfLetter: const Size(160, 160))
-              .first,
+   
         ];
       case PhonicsLetters.u:
         return [
@@ -2181,9 +2188,7 @@ class TypeExtensionTracking {
               pointsJsonFile: ShapePointsManger.uUpperShape,
               innerPaintColor: AppColorPhonetics.lightBlueColor4,
               outerPaintColor: AppColorPhonetics.lightBlueColor2),
-          getTracingDataPhonics(
-                  letter: letter, sizeOfLetter: const Size(160, 160))
-              .first,
+   
         ];
       case PhonicsLetters.j:
         return [
@@ -2205,9 +2210,7 @@ class TypeExtensionTracking {
               pointsJsonFile: ShapePointsManger.jUpperShape,
               innerPaintColor: AppColorPhonetics.lightBlueColor4,
               outerPaintColor: AppColorPhonetics.lightBlueColor2),
-          getTracingDataPhonics(
-                  letter: letter, sizeOfLetter: const Size(160, 160))
-              .first,
+   
         ];
 
       case PhonicsLetters.h:
@@ -2230,9 +2233,7 @@ class TypeExtensionTracking {
               pointsJsonFile: ShapePointsManger.hUpperShape,
               innerPaintColor: AppColorPhonetics.lightBlueColor4,
               outerPaintColor: AppColorPhonetics.lightBlueColor2),
-          getTracingDataPhonics(
-                  letter: letter, sizeOfLetter: const Size(160, 160))
-              .first,
+   
         ];
 
       case PhonicsLetters.o:
@@ -2240,8 +2241,7 @@ class TypeExtensionTracking {
         return [
           getTracingDataPhonics(letter: 'o', sizeOfLetter: const Size(200, 200))
               .first,
-          getTracingDataPhonics(letter: 'o', sizeOfLetter: const Size(160, 160))
-              .first,
+    
         ];
 
       case PhonicsLetters.g:
@@ -2261,9 +2261,7 @@ class TypeExtensionTracking {
               pointsJsonFile: ShapePointsManger.gUpperShape,
               innerPaintColor: AppColorPhonetics.lightBlueColor4,
               outerPaintColor: AppColorPhonetics.lightBlueColor2),
-          getTracingDataPhonics(
-                  letter: letter, sizeOfLetter: const Size(160, 160))
-              .first,
+   
         ];
 
       case PhonicsLetters.f:
@@ -2283,9 +2281,7 @@ class TypeExtensionTracking {
               pointsJsonFile: ShapePointsManger.fUpperShape,
               innerPaintColor: AppColorPhonetics.lightBlueColor4,
               outerPaintColor: AppColorPhonetics.lightBlueColor2),
-          getTracingDataPhonics(
-                  letter: letter, sizeOfLetter: const Size(160, 160))
-              .first,
+   
         ];
 
       case PhonicsLetters.d:
@@ -2305,15 +2301,13 @@ class TypeExtensionTracking {
               pointsJsonFile: ShapePointsManger.dUpperShape,
               innerPaintColor: AppColorPhonetics.lightBlueColor4,
               outerPaintColor: AppColorPhonetics.lightBlueColor2),
-          getTracingDataPhonics(letter: 'd', sizeOfLetter: const Size(160, 160))
-              .first,
+        
         ];
       case PhonicsLetters.w:
         return [
           getTracingDataPhonics(letter: 'w', sizeOfLetter: const Size(200, 200))
               .first,
-          getTracingDataPhonics(letter: 'w', sizeOfLetter: const Size(160, 160))
-              .first,
+      
         ];
       case PhonicsLetters.e:
         return [
@@ -2332,8 +2326,7 @@ class TypeExtensionTracking {
               pointsJsonFile: ShapePointsManger.eUpperShape,
               innerPaintColor: AppColorPhonetics.lightBlueColor4,
               outerPaintColor: AppColorPhonetics.lightBlueColor2),
-          getTracingDataPhonics(letter: 'e', sizeOfLetter: const Size(160, 160))
-              .first,
+  
         ];
       case PhonicsLetters.n:
         return [
@@ -2354,8 +2347,7 @@ class TypeExtensionTracking {
               pointsJsonFile: ShapePointsManger.nUpperShape,
               innerPaintColor: AppColorPhonetics.lightBlueColor4,
               outerPaintColor: AppColorPhonetics.lightBlueColor2),
-          getTracingDataPhonics(letter: 'n', sizeOfLetter: const Size(160, 160))
-              .first,
+    
         ];
       case PhonicsLetters.b:
         return [
@@ -2374,9 +2366,7 @@ class TypeExtensionTracking {
               pointsJsonFile: ShapePointsManger.bUpperShape,
               innerPaintColor: AppColorPhonetics.lightBlueColor4,
               outerPaintColor: AppColorPhonetics.lightBlueColor2),
-          getTracingDataPhonics(
-                  letter: letter, sizeOfLetter: const Size(160, 160))
-              .first,
+   
         ];
 
       case PhonicsLetters.s:
@@ -2384,8 +2374,7 @@ class TypeExtensionTracking {
         return [
           getTracingDataPhonics(letter: 's', sizeOfLetter: const Size(200, 200))
               .first,
-          getTracingDataPhonics(letter: 's', sizeOfLetter: const Size(160, 160))
-              .first,
+    
         ];
       case PhonicsLetters.a:
         return [
@@ -2405,8 +2394,7 @@ class TypeExtensionTracking {
               pointsJsonFile: ShapePointsManger.aUpperShape,
               innerPaintColor: AppColorPhonetics.lightBlueColor4,
               outerPaintColor: AppColorPhonetics.lightBlueColor2),
-          getTracingDataPhonics(letter: 'a', sizeOfLetter: const Size(160, 160))
-              .first,
+    
         ];
       case PhonicsLetters.m:
         return [
@@ -2427,15 +2415,13 @@ class TypeExtensionTracking {
               pointsJsonFile: ShapePointsManger.mUpperShape,
               innerPaintColor: AppColorPhonetics.lightBlueColor4,
               outerPaintColor: AppColorPhonetics.lightBlueColor2),
-          getTracingDataPhonics(letter: 'm', sizeOfLetter: const Size(160, 160))
-              .first,
+    
         ];
       case PhonicsLetters.k:
         return [
           getTracingDataPhonics(letter: 'k', sizeOfLetter: const Size(200, 200))
               .first,
-          getTracingDataPhonics(letter: 'k', sizeOfLetter: const Size(160, 160))
-              .first
+      
         ];
       case PhonicsLetters.q:
         return [
@@ -2454,36 +2440,31 @@ class TypeExtensionTracking {
               pointsJsonFile: ShapePointsManger.qUpperShape,
               innerPaintColor: AppColorPhonetics.lightBlueColor4,
               outerPaintColor: AppColorPhonetics.lightBlueColor2),
-          getTracingDataPhonics(letter: 'q', sizeOfLetter: const Size(160, 160))
-              .first,
+      
         ];
       case PhonicsLetters.v:
         return [
           getTracingDataPhonics(letter: 'v', sizeOfLetter: const Size(200, 200))
               .first,
-          getTracingDataPhonics(letter: 'v', sizeOfLetter: const Size(160, 160))
-              .first
+      
         ];
       case PhonicsLetters.x:
         return [
           getTracingDataPhonics(letter: 'x', sizeOfLetter: const Size(200, 200))
               .first,
-          getTracingDataPhonics(letter: 'x', sizeOfLetter: const Size(160, 160))
-              .first
+   
         ];
       case PhonicsLetters.y:
         return [
           getTracingDataPhonics(letter: 'y', sizeOfLetter: const Size(200, 200))
               .first,
-          getTracingDataPhonics(letter: 'y', sizeOfLetter: const Size(160, 160))
-              .first
+  
         ];
       case PhonicsLetters.z:
         return [
           getTracingDataPhonics(letter: 'z', sizeOfLetter: const Size(200, 200))
               .first,
-          getTracingDataPhonics(letter: 'z', sizeOfLetter: const Size(160, 160))
-              .first
+      
         ];
       case PhonicsLetters.t:
         return [
@@ -2504,14 +2485,12 @@ class TypeExtensionTracking {
               pointsJsonFile: ShapePointsManger.tUpperShape,
               innerPaintColor: AppColorPhonetics.lightBlueColor4,
               outerPaintColor: AppColorPhonetics.lightBlueColor2),
-          getTracingDataPhonics(letter: 't', sizeOfLetter: const Size(160, 160))
-              .first,
+       
         ];
       case PhonicsLetters.c:
         return [
           getTracingDataPhonics(letter: 'c').first,
-          getTracingDataPhonics(letter: 'c', sizeOfLetter: const Size(160, 160))
-              .first,
+       
         ];
       case PhonicsLetters.r:
         return [
@@ -2530,8 +2509,7 @@ class TypeExtensionTracking {
               pointsJsonFile: ShapePointsManger.rUpperShape,
               innerPaintColor: AppColorPhonetics.lightBlueColor4,
               outerPaintColor: AppColorPhonetics.lightBlueColor2),
-          getTracingDataPhonics(letter: 'r', sizeOfLetter: const Size(160, 160))
-              .first,
+     
         ];
       case PhonicsLetters.i:
         return [
@@ -2551,9 +2529,7 @@ class TypeExtensionTracking {
               pointsJsonFile: ShapePointsManger.iUpperShape,
               innerPaintColor: AppColorPhonetics.lightBlueColor4,
               outerPaintColor: AppColorPhonetics.lightBlueColor2),
-          getTracingDataPhonics(
-                  letter: letter, sizeOfLetter: const Size(160, 160))
-              .first,
+   
         ];
       case PhonicsLetters.p:
         return [
@@ -2573,12 +2549,10 @@ class TypeExtensionTracking {
               pointsJsonFile: ShapePointsManger.pUpperShape,
               innerPaintColor: AppColorPhonetics.lightBlueColor4,
               outerPaintColor: AppColorPhonetics.lightBlueColor2),
-          getTracingDataPhonics(
-                  letter: letter, sizeOfLetter: const Size(160, 160))
-              .first,
+   
         ];
-      default:
-        return [];
+   
+
     }
   }
 }
