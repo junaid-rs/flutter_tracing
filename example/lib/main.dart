@@ -20,24 +20,43 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
       home: Scaffold(
           appBar: AppBar(
-            title: const Text('Native Packages'),
+            title: const Text('Tracing Game'),
           ),
           body: Container(
-         
-            child: TracingWordGame(
-              words: [
-                'i Love G'
-              ], tracingListener: (buildContext , tracingState )async {
-                                 if (tracingState.drawingStates == DrawingStates.finishedCurrentScreen) {
-                                  await Future.delayed(Duration(seconds: 1));
-                                 }else     if (tracingState.drawingStates == DrawingStates.gameFinished) {
-                                  print('finished the game');
-                                 }
-                },
+            child: Column(
+              children: [
+                Expanded(
+                  child: TracingCharsGame(
+                    traceShapeModel: [
+                      TraceShapeModel(shapes: ['S', 'a', 'Q']),
+                    ],
+                    tracingListener: (buildContext, tracingState) async {
+                      if (tracingState.drawingStates ==
+                          DrawingStates.finishedCurrentScreen) {
+                        await Future.delayed(Duration(seconds: 1));
+                      } else if (tracingState.drawingStates ==
+                          DrawingStates.gameFinished) {
+                        print('finished the game');
+                      }
+                    },
+                  ),
+                ),
+                TracingWordGame(
+                  words: ['Flutter'],
+                  tracingListener: (buildContext, tracingState) async {
+                    if (tracingState.drawingStates ==
+                        DrawingStates.finishedCurrentScreen) {
+                      await Future.delayed(Duration(seconds: 1));
+                    } else if (tracingState.drawingStates ==
+                        DrawingStates.gameFinished) {
+                      print('finished the game');
+                    }
+                  },
+                ),
+              ],
             ),
           )),
     );
