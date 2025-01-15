@@ -11,7 +11,8 @@ enum DrawingStates {
 
 // ignore: must_be_immutable
 class TracingState extends Equatable {
-  final List<TraceShapeModel> traceShapeModel;
+  final List<TraceShapeModel>? traceShapeModel;
+  final List<TraceGeoMetricShapeModel>? traceGeoMetricShapes;
 
   final List<TraceModel> traceLetter;
   final DrawingStates drawingStates;
@@ -23,8 +24,9 @@ class TracingState extends Equatable {
  
   TracingState({  
       required this.stateOfTracing,
+       this.traceGeoMetricShapes,
 
-    required this.traceShapeModel,
+     this.traceShapeModel,
     this.viewSize = const Size(0, 0),
     this.letterPathsModels = const [],
     required this.traceLetter,
@@ -43,8 +45,12 @@ class TracingState extends Equatable {
     List<TraceModel>? traceLetter,
     StateOfTracing? stateOfTracing,
     int? activeIndex,
+       List<TraceGeoMetricShapeModel>? traceGeoMetricShapes,
+
   }) {
     return TracingState(
+      traceGeoMetricShapes: traceGeoMetricShapes ?? this.traceGeoMetricShapes,
+
       traceShapeModel: traceShapeModel ?? this.traceShapeModel,
       index: index ?? this.index,
       stateOfTracing: stateOfTracing ?? this.stateOfTracing,
@@ -57,6 +63,7 @@ class TracingState extends Equatable {
 
   TracingState clearData() {
     return TracingState(
+      traceGeoMetricShapes: traceGeoMetricShapes,
       traceShapeModel: traceShapeModel,
       letterPathsModels: letterPathsModels,
       drawingStates: DrawingStates.initial,

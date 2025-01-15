@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tracing/src/enums/shape_enums.dart';
 import 'package:tracing/src/tracing/phonetics_paint_widget/phonetics_painter.dart';
 import 'package:tracing/tracing.dart';
 

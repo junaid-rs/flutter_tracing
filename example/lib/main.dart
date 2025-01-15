@@ -29,9 +29,14 @@ class _MyAppState extends State<MyApp> {
             child: Column(
               children: [
                 Expanded(
-                  child: TracingCharsGame(
-                    traceShapeModel: [
-                      TraceShapeModel(shapes: ['S', 'a', 'Q']),
+                  child: TracingGeometricShapesGame(
+                    traceGeoMetricShapeModels: [
+                      TraceGeoMetricShapeModel(shapes: [
+                        MathShapes.triangle1,
+                        MathShapes.triangle2,
+                        MathShapes.triangle3,
+                        MathShapes.triangle4
+                      ]),
                     ],
                     tracingListener: (buildContext, tracingState) async {
                       if (tracingState.drawingStates ==
@@ -44,18 +49,35 @@ class _MyAppState extends State<MyApp> {
                     },
                   ),
                 ),
-                TracingWordGame(
-                  words: ['Flutter'],
-                  tracingListener: (buildContext, tracingState) async {
-                    if (tracingState.drawingStates ==
-                        DrawingStates.finishedCurrentScreen) {
-                      await Future.delayed(Duration(seconds: 1));
-                    } else if (tracingState.drawingStates ==
-                        DrawingStates.gameFinished) {
-                      print('finished the game');
-                    }
-                  },
-                ),
+
+                // Expanded(
+                //   child: TracingCharsGame(
+                //     traceShapeModel: [
+                //       TraceShapeModel(shapes: ['S', 'a', 'Q']),
+                //     ],
+                //     tracingListener: (buildContext, tracingState) async {
+                //       if (tracingState.drawingStates ==
+                //           DrawingStates.finishedCurrentScreen) {
+                //         await Future.delayed(Duration(seconds: 1));
+                //       } else if (tracingState.drawingStates ==
+                //           DrawingStates.gameFinished) {
+                //         print('finished the game');
+                //       }
+                //     },
+                //   ),
+                // ),
+                // TracingWordGame(
+                //   words: ['Flutter'],
+                //   tracingListener: (buildContext, tracingState) async {
+                //     if (tracingState.drawingStates ==
+                //         DrawingStates.finishedCurrentScreen) {
+                //       await Future.delayed(Duration(seconds: 1));
+                //     } else if (tracingState.drawingStates ==
+                //         DrawingStates.gameFinished) {
+                //       print('finished the game');
+                //     }
+                //   },
+                // ),
               ],
             ),
           )),

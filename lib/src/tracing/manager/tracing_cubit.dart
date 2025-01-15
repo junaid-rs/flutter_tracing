@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:math' as math;
 
 import 'package:bloc/bloc.dart';
@@ -9,18 +8,23 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:svg_path_parser/svg_path_parser.dart';
+import 'package:tracing/src/enums/shape_enums.dart';
 import 'package:tracing/src/tracing/model/letter_paths_model.dart';
+import 'package:tracing/src/tracing/model/trace_geometric_shape_model.dart';
 import 'package:tracing/src/tracing/model/trace_model.dart';
 import 'package:tracing/tracing.dart';
+
+import '../../get_shape_helper/enum_of_arabic_and_numbers_letters.dart';
 
 part 'tracing_state.dart';
 
 class TracingCubit extends Cubit<TracingState> {
   TracingCubit({
-    required List<TraceShapeModel> traceShapeModel,
-        required StateOfTracing stateOfTracing,
-
+    List<TraceShapeModel>? traceShapeModel,
+    required StateOfTracing stateOfTracing,
+    List<TraceGeoMetricShapeModel>? traceGeoMetricShapeModel,
   }) : super(TracingState(
+          traceGeoMetricShapes: traceGeoMetricShapeModel,
           traceShapeModel: traceShapeModel,
           index: 0,
           stateOfTracing: stateOfTracing,
@@ -30,15 +34,13 @@ class TracingCubit extends Cubit<TracingState> {
     updateTheTraceLetter();
   }
   updateIndex() {
-   
     int index = state.index;
-        index++;
+    index++;
 
-    if(index<state.traceShapeModel.length){
-
-    
-    emit(state.copyWith(index: index, drawingStates: DrawingStates.loaded));
-    updateTheTraceLetter();}
+    if (index < state.letterPathsModels.length) {
+      emit(state.copyWith(index: index, drawingStates: DrawingStates.loaded));
+      updateTheTraceLetter();
+    }
   }
 
   updateTheTraceLetter() async {
@@ -47,9 +49,14 @@ class TracingCubit extends Cubit<TracingState> {
         activeIndex: 0,
         stateOfTracing: state.stateOfTracing,
         traceLetter: TypeExtensionTracking().getTracingData(
-            shapes: state.traceShapeModel[state.index].shapes,
-            currentOfTracking:
-                state.stateOfTracing)));
+            geometryShapes: state.stateOfTracing == StateOfTracing.traceShapes
+                ? state.traceGeoMetricShapes![state.index].shapes
+                : null,
+            shapes: state.stateOfTracing == StateOfTracing.chars ||
+                    state.stateOfTracing == StateOfTracing.traceWords
+                ? state.traceShapeModel![state.index].shapes
+                : null,
+            currentOfTracking: state.stateOfTracing)));
     await loadAssets();
   }
 
@@ -217,7 +224,6 @@ class TracingCubit extends Cubit<TracingState> {
   Future<List<List<Offset>>> _loadPointsFromJson(
       String path, Size viewSize) async {
     final jsonString = await rootBundle.loadString('packages/tracing/$path');
-
 
     final jsonData = jsonDecode(jsonString);
     final List<List<Offset>> strokePointsList = [];
@@ -390,7 +396,12 @@ class TracingCubit extends Cubit<TracingState> {
           activeIndex: (state.activeIndex + 1),
           letterPathsModels: state.letterPathsModels,
         ));
-      } else if (state.index == state.traceShapeModel.length-1) {
+      } else if (state.stateOfTracing == StateOfTracing.traceShapes
+          ? state.index == state.traceGeoMetricShapes!.length - 1
+          : state.stateOfTracing == StateOfTracing.traceShapes ||
+                  state.stateOfTracing == StateOfTracing.traceWords
+              ? state.index == state.traceShapeModel!.length - 1
+              : false) {
         emit(state.copyWith(
             activeIndex: (state.activeIndex),
             letterPathsModels: state.letterPathsModels,

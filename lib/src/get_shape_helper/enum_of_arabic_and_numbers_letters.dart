@@ -1,90 +1,15 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
+import 'package:tracing/src/colors/phonetics_color.dart';
+import 'package:tracing/src/enums/shape_enums.dart';
+import 'package:tracing/src/phontics_constants/arabic_shape_paths_blue_unit.dart';
+import 'package:tracing/src/phontics_constants/arabis_shape_paths.dart';
+import 'package:tracing/src/phontics_constants/english_shape_path2.dart';
+import 'package:tracing/src/phontics_constants/math_trace_shape_paths.dart';
 import 'package:tracing/src/phontics_constants/numbers_svg.dart';
+import 'package:tracing/src/phontics_constants/shape_paths.dart';
+import 'package:tracing/src/points_manager/shape_points_manger.dart';
 import 'package:tracing/src/tracing/model/trace_model.dart';
 import 'package:tracing/tracing.dart';
-
-enum ArabicLetters {
-  gem,
-  sen,
-  lam,
-  ra2,
-  ba2,
-  fa2,
-  mem,
-  ein,
-  tah,
-  alf,
-  kha2,
-  theh,
-  sad,
-  ya2,
-  ha2,
-  dal,
-  tha2,
-  waw,
-  // kaf el be hamza
-  kaf,
-  zen,
-  // vilot
-
-  ta2,
-  ghen,
-  dad,
-  zal,
-
-  shen,
-  // qaf el be no2teten
-  qaf,
-
-  non,
-
-  heh1,
-  heh2,
-}
-
-enum MathShapes {
-  circle,
-  triangle,
-  rectangle,
-}
-
-enum PhonicsLetters {
-  s,
-  a,
-  f,
-  m,
-  t,
-  c,
-  i,
-  r,
-  p,
-  h,
-  j,
-  u,
-  l,
-  b,
-  o,
-  g,
-  d,
-  w,
-  e,
-  n,
-  k,
-  q,
-  v,
-  x,
-  y,
-  z,
-}
-
-enum StateOfTracing {
-
-  chars,
-  traceWords,
-  traceShapes,
-}
 
 class TypeExtensionTracking {
   ArabicLetters _detectTheCurrentEnum({required String letter}) {
@@ -147,23 +72,12 @@ class TypeExtensionTracking {
     } else if (letter == 'ب') {
       return ArabicLetters.ba2;
     } else {
-      return ArabicLetters.gem;
+      throw Exception('Unsupported character type for tracing.');
     }
   }
 
-  MathShapes _detectTheCurrentEnumMathShapes({required String shape}) {
-    if (shape == 'circle') {
-      return MathShapes.circle;
-    } else if (shape == 'rectangle') {
-      return MathShapes.rectangle;
-    } else if (shape == 'triangle') {
-      return MathShapes.triangle;
-    }
-    return MathShapes.circle;
-  }
 
   PhonicsLetters _detectTheCurrentEnumFromPhonics({required String letter}) {
-
     if (letter == 'a') {
       return PhonicsLetters.a;
     } else if (letter == 'q') {
@@ -221,294 +135,284 @@ class TypeExtensionTracking {
     }
   }
 
+  List<TraceModel> getTracingData({
+     List<String>? shapes,
+    required StateOfTracing currentOfTracking,
+         List<MathShapes>? geometryShapes,
 
-List<TraceModel> getTracingData({
-  required List<String> shapes,
-  required StateOfTracing currentOfTracking,
-  
-}) {
-  List<TraceModel> tracingDataList = [];
+  }) {
+    List<TraceModel> tracingDataList = [];
 
-  if (currentOfTracking == StateOfTracing.traceShapes) {
-    tracingDataList.addAll(getListOfTracingDataMathShapes(shapes: shapes));
-  } else if (currentOfTracking == StateOfTracing.traceWords) {
-    tracingDataList.addAll(getTraceWords(word: shapes.first));
-  } else if (currentOfTracking == StateOfTracing.chars) {
-    for (var char in shapes) {
- // Detect the type of letter and add the corresponding tracing data
-    if (_isArabicCharacter(char)) {
-      tracingDataList.addAll(getTracingDataArabic(letter: char));
-    } else if (_isNumber(char)) {
-      tracingDataList.addAll(getTracingDataNumbers(number: char));
-    } else if (_isPhonicsCharacter(char)) {
-      tracingDataList.addAll(getTracingDataPhonics(letter: char.toLowerCase())
-      );
-    } else if (_isUpperCasePhonicsCharacter(char)) {
-      final uppers=getTracingDataPhonicsUp(letter: char.toLowerCase());
-    final newBigSizedUppers= uppers.map((up)=>up.copyWith(letterViewSize: Size(300, 300))).toList();
-      tracingDataList.addAll(newBigSizedUppers);
+    if (currentOfTracking == StateOfTracing.traceShapes) {
+      tracingDataList.addAll(getListOfTracingDataMathShapes(shapes: geometryShapes!));
+    } else if (currentOfTracking == StateOfTracing.traceWords) {
+      tracingDataList.addAll(getTraceWords(word: shapes!.first));
+    } else if (currentOfTracking == StateOfTracing.chars) {
+      for (var char in shapes!) {
+        // Detect the type of letter and add the corresponding tracing data
+        if (_isArabicCharacter(char)) {
+          tracingDataList.addAll(getTracingDataArabic(letter: char));
+        } else if (_isNumber(char)) {
+          tracingDataList.addAll(getTracingDataNumbers(number: char));
+        } else if (_isPhonicsCharacter(char)) {
+          tracingDataList
+              .addAll(getTracingDataPhonics(letter: char.toLowerCase()));
+        } else if (_isUpperCasePhonicsCharacter(char)) {
+          final uppers = getTracingDataPhonicsUp(letter: char.toLowerCase());
+          final newBigSizedUppers = uppers
+              .map((up) => up.copyWith(letterViewSize: Size(300, 300)))
+              .toList();
+          tracingDataList.addAll(newBigSizedUppers);
+        } else {
+          throw Exception('Unsupported character type for tracing.');
+        }
+      }
     } else {
-      throw Exception('Unsupported character type for tracing.');
+      throw Exception('Unknown StateOfTracing value');
     }
-    }
-   
-  } else {
-    throw Exception('Unknown StateOfTracing value');
-  }
 
-  return tracingDataList; // Return the combined tracing data list
-}
+    return tracingDataList; // Return the combined tracing data list
+  }
 
 // Helper functions to detect the type of letter
 
-bool _isArabicCharacter(String letter) {
-  // Check if the letter is an Arabic character (Unicode range)
-  return RegExp(r'[\u0600-\u06FF]').hasMatch(letter);
-}
+  bool _isArabicCharacter(String letter) {
+    // Check if the letter is an Arabic character (Unicode range)
+    return RegExp(r'[\u0600-\u06FF]').hasMatch(letter);
+  }
 
-bool _isNumber(String letter) {
-  // Check if the letter is a number
-  return RegExp(r'^(10|[0-9])$').hasMatch(letter);
-}
+  bool _isNumber(String letter) {
+    // Check if the letter is a number
+    return RegExp(r'^(10|[0-9])$').hasMatch(letter);
+  }
 
-bool _isPhonicsCharacter(String letter) {
-  // Check if the letter is a valid phonics character (assuming it's A-Z or a-z)
-  return RegExp(r'^[a-z]$').hasMatch(letter);
-}
+  bool _isPhonicsCharacter(String letter) {
+    // Check if the letter is a valid phonics character (assuming it's A-Z or a-z)
+    return RegExp(r'^[a-z]$').hasMatch(letter);
+  }
 
-bool _isUpperCasePhonicsCharacter(String letter) {
-  // Check if the letter is an uppercase phonics character
-  return RegExp(r'^[A-Z]$').hasMatch(letter);
-}
-
+  bool _isUpperCasePhonicsCharacter(String letter) {
+    // Check if the letter is an uppercase phonics character
+    return RegExp(r'^[A-Z]$').hasMatch(letter);
+  }
 
   List<TraceModel> getTracingDataNumbers({required String number}) {
     List<TraceModel> listOfTraceModel = [];
 
- 
-      switch (number) {
-                case '1':
-           listOfTraceModel.add(TraceModel(
-                poitionIndexPath: const Size(-12, -85),
-                poitionDottedPath: const Size(-31, 10),
-                scaledottedPath: .8,
-                scaleIndexPath: .1,
-                dottedColor: AppColorPhonetics.phonticGrey,
-                indexColor: AppColorPhonetics.white,
-                dottedPath: NumberSvgs.shapeNumber1Dotted,
-                indexPath: NumberSvgs.shapeNumber1Index,
-                letterPath: NumberSvgs.shapeNumber1,
-                indexPathPaintStyle: PaintingStyle.fill,
-                dottedPathPaintStyle: PaintingStyle.stroke,
-                pointsJsonFile: ShapePointsManger.number1,
-                innerPaintColor: AppColorPhonetics.lightBlueColor6,
-                outerPaintColor: AppColorPhonetics.lightBlueColor5));
-            break;
-    
-        case '2':
-          listOfTraceModel.add(TraceModel(
-              poitionIndexPath: const Size(-50, 20),
-              poitionDottedPath: const Size(0, -5),
-              indexPathPaintStyle: PaintingStyle.fill,
-              dottedPathPaintStyle: PaintingStyle.stroke,
-              scaleIndexPath: .8,
-              scaledottedPath: 1,
-              dottedColor: AppColorPhonetics.phonticGrey,
-              indexColor: AppColorPhonetics.white,
-              dottedPath: NumberSvgs.shapeNumber2Dotted,
-              indexPath: NumberSvgs.shapeNumber2Index,
-              letterPath: NumberSvgs.shapeNumber2,
-              pointsJsonFile: ShapePointsManger.number2,
-              innerPaintColor: AppColorPhonetics.lightBlueColor6,
-              outerPaintColor: AppColorPhonetics.lightBlueColor5));
-          break;
-        case '3':
-          listOfTraceModel.add(TraceModel(
-              poitionIndexPath: const Size(-25, -30),
-              poitionDottedPath: const Size(-5, 0),
-              indexPathPaintStyle: PaintingStyle.fill,
-              dottedPathPaintStyle: PaintingStyle.stroke,
-              scaleIndexPath: .4,
+    switch (number) {
+      case '1':
+        listOfTraceModel.add(TraceModel(
+            poitionIndexPath: const Size(-12, -85),
+            poitionDottedPath: const Size(-31, 10),
+            scaledottedPath: .8,
+            scaleIndexPath: .1,
+            dottedColor: AppColorPhonetics.phonticGrey,
+            indexColor: AppColorPhonetics.white,
+            dottedPath: NumberSvgs.shapeNumber1Dotted,
+            indexPath: NumberSvgs.shapeNumber1Index,
+            letterPath: NumberSvgs.shapeNumber1,
+            indexPathPaintStyle: PaintingStyle.fill,
+            dottedPathPaintStyle: PaintingStyle.stroke,
+            pointsJsonFile: ShapePointsManger.number1,
+            innerPaintColor: AppColorPhonetics.lightBlueColor6,
+            outerPaintColor: AppColorPhonetics.lightBlueColor5));
+        break;
+
+      case '2':
+        listOfTraceModel.add(TraceModel(
+            poitionIndexPath: const Size(-50, 20),
+            poitionDottedPath: const Size(0, -5),
+            indexPathPaintStyle: PaintingStyle.fill,
+            dottedPathPaintStyle: PaintingStyle.stroke,
+            scaleIndexPath: .8,
+            scaledottedPath: 1,
+            dottedColor: AppColorPhonetics.phonticGrey,
+            indexColor: AppColorPhonetics.white,
+            dottedPath: NumberSvgs.shapeNumber2Dotted,
+            indexPath: NumberSvgs.shapeNumber2Index,
+            letterPath: NumberSvgs.shapeNumber2,
+            pointsJsonFile: ShapePointsManger.number2,
+            innerPaintColor: AppColorPhonetics.lightBlueColor6,
+            outerPaintColor: AppColorPhonetics.lightBlueColor5));
+        break;
+      case '3':
+        listOfTraceModel.add(TraceModel(
+            poitionIndexPath: const Size(-25, -30),
+            poitionDottedPath: const Size(-5, 0),
+            indexPathPaintStyle: PaintingStyle.fill,
+            dottedPathPaintStyle: PaintingStyle.stroke,
+            scaleIndexPath: .4,
+            scaledottedPath: .9,
+            dottedColor: AppColorPhonetics.phonticGrey,
+            indexColor: AppColorPhonetics.white,
+            dottedPath: NumberSvgs.shapeNumber3Dotted,
+            indexPath: NumberSvgs.shapeNumber3Index,
+            letterPath: NumberSvgs.shapeNumber3,
+            pointsJsonFile: ShapePointsManger.number3,
+            innerPaintColor: AppColorPhonetics.lightBlueColor6,
+            outerPaintColor: AppColorPhonetics.lightBlueColor5));
+        break;
+      case '4':
+        listOfTraceModel.add(TraceModel(
+            poitionIndexPath: const Size(-10, -33),
+            poitionDottedPath: const Size(-3, -10),
+            scaledottedPath: .85,
+            disableDivededStrokes: true,
+            scaleIndexPath: .66,
+            dottedColor: AppColorPhonetics.phonticGrey,
+            indexColor: AppColorPhonetics.white,
+            dottedPath: NumberSvgs.shapeNumber4Dotted,
+            indexPath: NumberSvgs.shapeNumber4Index,
+            letterPath: NumberSvgs.shapeNumber4,
+            indexPathPaintStyle: PaintingStyle.fill,
+            dottedPathPaintStyle: PaintingStyle.stroke,
+            strokeWidth: 35,
+            // distanceToCheck: 10,
+            pointsJsonFile: ShapePointsManger.number4,
+            innerPaintColor: AppColorPhonetics.lightBlueColor6,
+            outerPaintColor: AppColorPhonetics.lightBlueColor5));
+        break;
+      case '5':
+        listOfTraceModel.add(TraceModel(
+            poitionIndexPath: const Size(-30, -50),
+            poitionDottedPath: const Size(-5, 0),
+            indexPathPaintStyle: PaintingStyle.fill,
+            dottedPathPaintStyle: PaintingStyle.stroke,
+            scaleIndexPath: .5,
+            scaledottedPath: .95,
+            dottedColor: AppColorPhonetics.phonticGrey,
+            indexColor: AppColorPhonetics.white,
+            dottedPath: NumberSvgs.shapeNumber5Dotted,
+            indexPath: NumberSvgs.shapeNumber5Index,
+            letterPath: NumberSvgs.shapeNumber5,
+            pointsJsonFile: ShapePointsManger.number5,
+            innerPaintColor: AppColorPhonetics.lightBlueColor6,
+            outerPaintColor: AppColorPhonetics.lightBlueColor5));
+        break;
+      case '6':
+        listOfTraceModel.add(TraceModel(
+            poitionIndexPath: const Size(5, -90),
+            poitionDottedPath: const Size(-5, 0),
+            indexPathPaintStyle: PaintingStyle.fill,
+            dottedPathPaintStyle: PaintingStyle.stroke,
+            scaleIndexPath: .1,
+            scaledottedPath: .9,
+            dottedColor: AppColorPhonetics.phonticGrey,
+            indexColor: AppColorPhonetics.white,
+            dottedPath: NumberSvgs.shapeNumber6Dotted,
+            indexPath: NumberSvgs.shapeNumber6Index,
+            letterPath: NumberSvgs.shapeNumber6,
+            pointsJsonFile: ShapePointsManger.number6,
+            innerPaintColor: AppColorPhonetics.lightBlueColor6,
+            outerPaintColor: AppColorPhonetics.lightBlueColor5));
+        break;
+      case '7':
+        listOfTraceModel.add(TraceModel(
+            poitionIndexPath: const Size(0, -90),
+            poitionDottedPath: const Size(0, -5),
+            scaledottedPath: .9,
+            scaleIndexPath: .6,
+            dottedColor: AppColorPhonetics.phonticGrey,
+            indexColor: AppColorPhonetics.white,
+            dottedPath: NumberSvgs.shapeNumber7Dotted,
+            indexPathPaintStyle: PaintingStyle.fill,
+            dottedPathPaintStyle: PaintingStyle.stroke,
+            indexPath: NumberSvgs.shapeNumber7Index,
+            letterPath: NumberSvgs.shapeNumber7,
+            strokeWidth: 45,
+            pointsJsonFile: ShapePointsManger.number7,
+            innerPaintColor: AppColorPhonetics.lightBlueColor6,
+            outerPaintColor: AppColorPhonetics.lightBlueColor5));
+        break;
+      case '8':
+        listOfTraceModel.add(TraceModel(
+            poitionIndexPath: const Size(50, -50),
+            poitionDottedPath: const Size(5, 0),
+            indexPathPaintStyle: PaintingStyle.fill,
+            dottedPathPaintStyle: PaintingStyle.stroke,
+            scaleIndexPath: .07,
+            scaledottedPath: 1,
+            strokeWidth: 40,
+            dottedColor: AppColorPhonetics.phonticGrey,
+            indexColor: AppColorPhonetics.white,
+            dottedPath: NumberSvgs.shapeNumber8Dotted,
+            indexPath: NumberSvgs.shapeNumber8Index,
+            letterPath: NumberSvgs.shapeNumber8,
+            pointsJsonFile: ShapePointsManger.number8,
+            innerPaintColor: AppColorPhonetics.lightBlueColor6,
+            outerPaintColor: AppColorPhonetics.lightBlueColor5));
+        break;
+      case '9':
+        listOfTraceModel.add(TraceModel(
+            poitionIndexPath: const Size(55, -30),
+            poitionDottedPath: const Size(0, -5),
+            indexPathPaintStyle: PaintingStyle.fill,
+            dottedPathPaintStyle: PaintingStyle.stroke,
+            scaleIndexPath: .18,
+            scaledottedPath: .9,
+            strokeWidth: 45,
+            dottedColor: AppColorPhonetics.phonticGrey,
+            indexColor: AppColorPhonetics.white,
+            dottedPath: NumberSvgs.shapeNumber9Dotted,
+            indexPath: NumberSvgs.shapeNumber9Index,
+            letterPath: NumberSvgs.shapeNumber9,
+            pointsJsonFile: ShapePointsManger.number9,
+            innerPaintColor: AppColorPhonetics.lightBlueColor6,
+            outerPaintColor: AppColorPhonetics.lightBlueColor5));
+        break;
+      case '10':
+        listOfTraceModel.add(
+          TraceModel(
+              poitionIndexPath: const Size(-28, -90),
+              poitionDottedPath: const Size(-3, 0),
               scaledottedPath: .9,
+              scaleIndexPath: .55,
               dottedColor: AppColorPhonetics.phonticGrey,
               indexColor: AppColorPhonetics.white,
-              dottedPath: NumberSvgs.shapeNumber3Dotted,
-              indexPath: NumberSvgs.shapeNumber3Index,
-              letterPath: NumberSvgs.shapeNumber3,
-              pointsJsonFile: ShapePointsManger.number3,
-              innerPaintColor: AppColorPhonetics.lightBlueColor6,
-              outerPaintColor: AppColorPhonetics.lightBlueColor5));
-          break;
-        case '4':
-          listOfTraceModel.add(TraceModel(
-              poitionIndexPath: const Size(-10, -33),
-              poitionDottedPath: const Size(-3, -10),
-              scaledottedPath: .85,
-              disableDivededStrokes: true,
-              scaleIndexPath: .66,
-              dottedColor: AppColorPhonetics.phonticGrey,
-              indexColor: AppColorPhonetics.white,
-              dottedPath: NumberSvgs.shapeNumber4Dotted,
-              indexPath: NumberSvgs.shapeNumber4Index,
-              letterPath: NumberSvgs.shapeNumber4,
+              dottedPath: NumberSvgs.shapeNumber10Dotted,
+              indexPath: NumberSvgs.shapeNumber10Index,
+              letterPath: NumberSvgs.shapeNumber10,
               indexPathPaintStyle: PaintingStyle.fill,
-              dottedPathPaintStyle: PaintingStyle.stroke,
-              strokeWidth: 35,
-              // distanceToCheck: 10,
-              pointsJsonFile: ShapePointsManger.number4,
-              innerPaintColor: AppColorPhonetics.lightBlueColor6,
-              outerPaintColor: AppColorPhonetics.lightBlueColor5));
-          break;
-        case '5':
-          listOfTraceModel.add(TraceModel(
-              poitionIndexPath: const Size(-30, -50),
-              poitionDottedPath: const Size(-5, 0),
-              indexPathPaintStyle: PaintingStyle.fill,
-              dottedPathPaintStyle: PaintingStyle.stroke,
-              scaleIndexPath: .5,
-              scaledottedPath: .95,
-              dottedColor: AppColorPhonetics.phonticGrey,
-              indexColor: AppColorPhonetics.white,
-              dottedPath: NumberSvgs.shapeNumber5Dotted,
-              indexPath: NumberSvgs.shapeNumber5Index,
-              letterPath: NumberSvgs.shapeNumber5,
-              pointsJsonFile: ShapePointsManger.number5,
-              innerPaintColor: AppColorPhonetics.lightBlueColor6,
-              outerPaintColor: AppColorPhonetics.lightBlueColor5));
-          break;
-        case '6':
-          listOfTraceModel.add(TraceModel(
-              poitionIndexPath: const Size(5, -90),
-              poitionDottedPath: const Size(-5, 0),
-              indexPathPaintStyle: PaintingStyle.fill,
-              dottedPathPaintStyle: PaintingStyle.stroke,
-              scaleIndexPath: .1,
-              scaledottedPath: .9,
-              dottedColor: AppColorPhonetics.phonticGrey,
-              indexColor: AppColorPhonetics.white,
-              dottedPath: NumberSvgs.shapeNumber6Dotted,
-              indexPath: NumberSvgs.shapeNumber6Index,
-              letterPath: NumberSvgs.shapeNumber6,
-              pointsJsonFile: ShapePointsManger.number6,
-              innerPaintColor: AppColorPhonetics.lightBlueColor6,
-              outerPaintColor: AppColorPhonetics.lightBlueColor5));
-          break;
-        case '7':
-          listOfTraceModel.add(TraceModel(
-              poitionIndexPath: const Size(0, -90),
-              poitionDottedPath: const Size(0, -5),
-              scaledottedPath: .9,
-              scaleIndexPath: .6,
-              dottedColor: AppColorPhonetics.phonticGrey,
-              indexColor: AppColorPhonetics.white,
-              dottedPath: NumberSvgs.shapeNumber7Dotted,
-              indexPathPaintStyle: PaintingStyle.fill,
-              dottedPathPaintStyle: PaintingStyle.stroke,
-              indexPath: NumberSvgs.shapeNumber7Index,
-              letterPath: NumberSvgs.shapeNumber7,
               strokeWidth: 45,
-              pointsJsonFile: ShapePointsManger.number7,
+              pointsJsonFile: ShapePointsManger.number10,
               innerPaintColor: AppColorPhonetics.lightBlueColor6,
-              outerPaintColor: AppColorPhonetics.lightBlueColor5));
-          break;
-        case '8':
-          listOfTraceModel.add(TraceModel(
-              poitionIndexPath: const Size(50, -50),
-              poitionDottedPath: const Size(5, 0),
-              indexPathPaintStyle: PaintingStyle.fill,
-              dottedPathPaintStyle: PaintingStyle.stroke,
-              scaleIndexPath: .07,
-              scaledottedPath: 1,
-              strokeWidth: 40,
-              dottedColor: AppColorPhonetics.phonticGrey,
-              indexColor: AppColorPhonetics.white,
-              dottedPath: NumberSvgs.shapeNumber8Dotted,
-              indexPath: NumberSvgs.shapeNumber8Index,
-              letterPath: NumberSvgs.shapeNumber8,
-              pointsJsonFile: ShapePointsManger.number8,
-              innerPaintColor: AppColorPhonetics.lightBlueColor6,
-              outerPaintColor: AppColorPhonetics.lightBlueColor5));
-          break;
-        case '9':
-          listOfTraceModel.add(TraceModel(
-              poitionIndexPath: const Size(55, -30),
-              poitionDottedPath: const Size(0, -5),
-              indexPathPaintStyle: PaintingStyle.fill,
-              dottedPathPaintStyle: PaintingStyle.stroke,
-              scaleIndexPath: .18,
-              scaledottedPath: .9,
-              strokeWidth: 45,
-              dottedColor: AppColorPhonetics.phonticGrey,
-              indexColor: AppColorPhonetics.white,
-              dottedPath: NumberSvgs.shapeNumber9Dotted,
-              indexPath: NumberSvgs.shapeNumber9Index,
-              letterPath: NumberSvgs.shapeNumber9,
-              pointsJsonFile: ShapePointsManger.number9,
-              innerPaintColor: AppColorPhonetics.lightBlueColor6,
-              outerPaintColor: AppColorPhonetics.lightBlueColor5));
-          break;
-        case '10':
-          listOfTraceModel.add(
-            TraceModel(
-                poitionIndexPath: const Size(-28, -90),
-                poitionDottedPath: const Size(-3, 0),
-                scaledottedPath: .9,
-                scaleIndexPath: .55,
-                dottedColor: AppColorPhonetics.phonticGrey,
-                indexColor: AppColorPhonetics.white,
-                dottedPath: NumberSvgs.shapeNumber10Dotted,
-                indexPath: NumberSvgs.shapeNumber10Index,
-                letterPath: NumberSvgs.shapeNumber10,
-                indexPathPaintStyle: PaintingStyle.fill,
-                strokeWidth: 45,
-                pointsJsonFile: ShapePointsManger.number10,
-                innerPaintColor: AppColorPhonetics.lightBlueColor6,
-                outerPaintColor: AppColorPhonetics.lightBlueColor5),
-          );
-        case '0':
-            listOfTraceModel.add(TraceModel(
-                poitionIndexPath: const Size(-10, -90),
-                poitionDottedPath: const Size(-5, -5),
-                scaledottedPath: .9,
-                scaleIndexPath: .08,
-                indexPathPaintStyle: PaintingStyle.fill,
-                dottedColor: AppColorPhonetics.phonticGrey,
-                indexColor: AppColorPhonetics.white,
-                dottedPath: NumberSvgs.shapeNumber0Dotted,
-                indexPath: NumberSvgs.shapeNumber0Index,
-                letterPath: NumberSvgs.shapeNumber0,
-                pointsJsonFile: ShapePointsManger.number0,
-                innerPaintColor: AppColorPhonetics.lightBlueColor6,
-                outerPaintColor: AppColorPhonetics.lightBlueColor5));
-          break;
-      }
-    
+              outerPaintColor: AppColorPhonetics.lightBlueColor5),
+        );
+      case '0':
+        listOfTraceModel.add(TraceModel(
+            poitionIndexPath: const Size(-10, -90),
+            poitionDottedPath: const Size(-5, -5),
+            scaledottedPath: .9,
+            scaleIndexPath: .08,
+            indexPathPaintStyle: PaintingStyle.fill,
+            dottedColor: AppColorPhonetics.phonticGrey,
+            indexColor: AppColorPhonetics.white,
+            dottedPath: NumberSvgs.shapeNumber0Dotted,
+            indexPath: NumberSvgs.shapeNumber0Index,
+            letterPath: NumberSvgs.shapeNumber0,
+            pointsJsonFile: ShapePointsManger.number0,
+            innerPaintColor: AppColorPhonetics.lightBlueColor6,
+            outerPaintColor: AppColorPhonetics.lightBlueColor5));
+        break;
+    }
 
     return listOfTraceModel;
   }
 
+  List<TraceModel> getListOfTracingDataMathShapes(
+      {required List<MathShapes> shapes}) {
+    List<TraceModel> traceModels = [];
 
-List<TraceModel> getListOfTracingDataMathShapes({required List<String> shapes}) {
-  List<MathShapes> shapesEnumList = [];
-  List<TraceModel> traceModels = [];
+    // Iterate over each MathShapes enum and generate a TraceModel for it
+    for (var shapeEnum in shapes) {
+      traceModels.addAll(getTracingDataMathShapes(currentLetter: shapeEnum));
+    }
 
-  for (var shape in shapes) {
-    MathShapes shapeEnum = _detectTheCurrentEnumMathShapes(shape: shape);
-    shapesEnumList.add(shapeEnum);
+    return traceModels; // Return the list of enums
   }
 
-  // Iterate over each MathShapes enum and generate a TraceModel for it
-  for (var shapeEnum in shapesEnumList) {
-        traceModels.addAll(getTracingDataMathShapes(currentLetter: shapeEnum));
-
-  }
-
-  return traceModels; // Return the list of enums
-}
-
-
-  List<TraceModel> getTracingDataMathShapes({required    MathShapes currentLetter}) {
-
+  List<TraceModel> getTracingDataMathShapes(
+      {required MathShapes currentLetter}) {
     switch (currentLetter) {
       case MathShapes.circle:
         final circ = TraceModel(
@@ -529,15 +433,6 @@ List<TraceModel> getListOfTracingDataMathShapes({required List<String> shapes}) 
             innerPaintColor: AppColorPhonetics.lightBlueColor4,
             outerPaintColor: Colors.transparent);
         return [
-          circ.copyWith(
-            letterViewSize: Size(165, 165),
-          ),
-          circ.copyWith(
-            letterViewSize: Size(150, 150),
-          ),
-          circ.copyWith(
-            letterViewSize: Size(125, 125),
-          ),
           circ.copyWith(
             letterViewSize: Size(200, 200),
           ),
@@ -563,73 +458,13 @@ List<TraceModel> getListOfTracingDataMathShapes({required List<String> shapes}) 
             outerPaintColor: Colors.transparent);
         return [
           rect.copyWith(
-            letterViewSize: Size(125, 125),
-          ),
-          rect.copyWith(
-            letterViewSize: Size(150, 150),
-          ),
-          rect.copyWith(
-            letterViewSize: Size(140, 140),
-          ),
-          rect.copyWith(
             letterViewSize: Size(160, 160),
           ),
         ];
 
-      case MathShapes.triangle:
+      case MathShapes.triangle1:
         return [
-          TraceModel(
-              letterViewSize: Size(150, 150),
-              poitionIndexPath: const Size(-10, 10),
-              poitionDottedPath: const Size(-5, 3),
-              scaledottedPath: .85,
-              scaleIndexPath: 1.25,
-              indexPathPaintStyle: PaintingStyle.stroke,
-              dottedPath: MathTraceShapePaths.triangle4DottedPath,
-              dottedColor: Colors.black,
-              indexColor: AppColorPhonetics.phonticGrey,
-              indexPath: MathTraceShapePaths.triangle4IndexPath,
-              letterPath: MathTraceShapePaths.triangle4ShapePath,
-              strokeWidth: 35,
-              strokeIndex: 1,
-              pointsJsonFile: ShapePointsManger.triangle4Shape,
-              innerPaintColor: AppColorPhonetics.lightBlueColor4,
-              outerPaintColor: Colors.transparent),
-          TraceModel(
-              letterViewSize: Size(180, 180),
-              poitionIndexPath: const Size(-8, 10),
-              poitionDottedPath: const Size(0, 3),
-              scaledottedPath: .9,
-              scaleIndexPath: 1.17,
-              indexPathPaintStyle: PaintingStyle.stroke,
-              dottedPath: MathTraceShapePaths.triangle3DottedPath,
-              dottedColor: Colors.black,
-              indexColor: AppColorPhonetics.phonticGrey,
-              indexPath: MathTraceShapePaths.triangle3Index,
-              letterPath: MathTraceShapePaths.triangle3ShapePath,
-              strokeWidth: 40,
-              strokeIndex: 1,
-              pointsJsonFile: ShapePointsManger.triangle3Shape,
-              innerPaintColor: AppColorPhonetics.lightBlueColor4,
-              outerPaintColor: Colors.transparent),
-          TraceModel(
-              letterViewSize: Size(160, 160),
-              poitionIndexPath: const Size(5, 0),
-              poitionDottedPath: const Size(-5, 3),
-              scaledottedPath: .85,
-              scaleIndexPath: 1.1,
-              indexPathPaintStyle: PaintingStyle.stroke,
-              dottedPath: MathTraceShapePaths.triangle2DottedPath,
-              dottedColor: Colors.black,
-              indexColor: AppColorPhonetics.phonticGrey,
-              indexPath: MathTraceShapePaths.triangle2IndexPath,
-              letterPath: MathTraceShapePaths.triangle2ShapePath,
-              strokeWidth: 30,
-              strokeIndex: 1,
-              pointsJsonFile: ShapePointsManger.triangle2Shape,
-              innerPaintColor: AppColorPhonetics.lightBlueColor4,
-              outerPaintColor: Colors.transparent),
-          TraceModel(
+                TraceModel(
               letterViewSize: Size(150, 150),
               poitionIndexPath: const Size(-5, 10),
               poitionDottedPath: const Size(0, 3),
@@ -648,54 +483,119 @@ List<TraceModel> getListOfTracingDataMathShapes({required List<String> shapes}) 
               outerPaintColor: Colors.transparent),
         ];
 
+      case MathShapes.triangle2:
+        return [
+          TraceModel(
+              letterViewSize: Size(160, 160),
+              poitionIndexPath: const Size(5, 0),
+              poitionDottedPath: const Size(-5, 3),
+              scaledottedPath: .85,
+              scaleIndexPath: 1.1,
+              indexPathPaintStyle: PaintingStyle.stroke,
+              dottedPath: MathTraceShapePaths.triangle2DottedPath,
+              dottedColor: Colors.black,
+              indexColor: AppColorPhonetics.phonticGrey,
+              indexPath: MathTraceShapePaths.triangle2IndexPath,
+              letterPath: MathTraceShapePaths.triangle2ShapePath,
+              strokeWidth: 30,
+              strokeIndex: 1,
+              pointsJsonFile: ShapePointsManger.triangle2Shape,
+              innerPaintColor: AppColorPhonetics.lightBlueColor4,
+              outerPaintColor: Colors.transparent),
+        ];
 
+      case MathShapes.triangle3:
+        return [
+          TraceModel(
+              letterViewSize: Size(180, 180),
+              poitionIndexPath: const Size(-8, 10),
+              poitionDottedPath: const Size(0, 3),
+              scaledottedPath: .9,
+              scaleIndexPath: 1.17,
+              indexPathPaintStyle: PaintingStyle.stroke,
+              dottedPath: MathTraceShapePaths.triangle3DottedPath,
+              dottedColor: Colors.black,
+              indexColor: AppColorPhonetics.phonticGrey,
+              indexPath: MathTraceShapePaths.triangle3Index,
+              letterPath: MathTraceShapePaths.triangle3ShapePath,
+              strokeWidth: 40,
+              strokeIndex: 1,
+              pointsJsonFile: ShapePointsManger.triangle3Shape,
+              innerPaintColor: AppColorPhonetics.lightBlueColor4,
+              outerPaintColor: Colors.transparent),
+        ];
+      case MathShapes.triangle4:
+        return [
+          TraceModel(
+              letterViewSize: Size(150, 150),
+              poitionIndexPath: const Size(-10, 10),
+              poitionDottedPath: const Size(-5, 3),
+              scaledottedPath: .85,
+              scaleIndexPath: 1.25,
+              indexPathPaintStyle: PaintingStyle.stroke,
+              dottedPath: MathTraceShapePaths.triangle4DottedPath,
+              dottedColor: Colors.black,
+              indexColor: AppColorPhonetics.phonticGrey,
+              indexPath: MathTraceShapePaths.triangle4IndexPath,
+              letterPath: MathTraceShapePaths.triangle4ShapePath,
+              strokeWidth: 35,
+              strokeIndex: 1,
+              pointsJsonFile: ShapePointsManger.triangle4Shape,
+              innerPaintColor: AppColorPhonetics.lightBlueColor4,
+              outerPaintColor: Colors.transparent),
+        ];
     }
   }
 
-List<TraceModel> getTraceWords({
-  required String word,
-  Size sizeOfLetter = const Size(500, 500),
-}) {
-  List<TraceModel> letters = [];
-  int i = 0;
+  List<TraceModel> getTraceWords({
+    required String word,
+    Size sizeOfLetter = const Size(500, 500),
+  }) {
+    List<TraceModel> letters = [];
+    int i = 0;
 
-  while (i < word.length) {
-    if (word[i] == '1' && i + 1 < word.length && word[i + 1] == '0') {
-      // Check if current character is '1' and next is '0' (treat it as 10)
-      if (word[i] == '1' && word[i + 1] == '0') {
-        letters.add(getTracingDataNumbers(number: '10').first.copyWith(
-          isSpace: (i + 2 < word.length && word[i + 2] == ' '), // Check if next character is a space
-        ));
-        i += 2; // Skip the next character (i + 1) since we've handled '10'
-        continue;
+    while (i < word.length) {
+      if (word[i] == '1' && i + 1 < word.length && word[i + 1] == '0') {
+        // Check if current character is '1' and next is '0' (treat it as 10)
+        if (word[i] == '1' && word[i + 1] == '0') {
+          letters.add(getTracingDataNumbers(number: '10').first.copyWith(
+                isSpace: (i + 2 < word.length &&
+                    word[i + 2] == ' '), // Check if next character is a space
+              ));
+          i += 2; // Skip the next character (i + 1) since we've handled '10'
+          continue;
+        }
       }
+
+      bool isNextSpace = (i + 1 < word.length) &&
+          word[i + 1] == ' '; // Check if the next character is a space
+
+      if (_isArabicCharacter(word[i])) {
+        letters.add(getTracingDataArabic(letter: word[i]).first.copyWith(
+              isSpace: isNextSpace,
+            ));
+      } else if (_isNumber(word[i])) {
+        letters.add(getTracingDataNumbers(number: word[i]).first.copyWith(
+              isSpace: isNextSpace,
+            ));
+      } else if (_isPhonicsCharacter(word[i])) {
+        letters.add(
+            getTracingDataPhonics(letter: word[i].toLowerCase()).first.copyWith(
+                  isSpace: isNextSpace,
+                ));
+      } else if (_isUpperCasePhonicsCharacter(word[i])) {
+        final uppers = getTracingDataPhonicsUp(letter: word[i].toLowerCase());
+        final newBigSizedUppers = uppers
+            .map((up) => up.copyWith(letterViewSize: Size(300, 300)))
+            .first;
+        letters.add(newBigSizedUppers.copyWith(isSpace: isNextSpace));
+      }
+
+      i++; // Move to the next character
     }
 
-    bool isNextSpace = (i + 1 < word.length) && word[i + 1] == ' '; // Check if the next character is a space
-
-    if (_isArabicCharacter(word[i])) {
-      letters.add(getTracingDataArabic(letter: word[i]).first.copyWith(
-        isSpace: isNextSpace,
-      ));
-    } else if (_isNumber(word[i])) {
-      letters.add(getTracingDataNumbers(number: word[i]).first.copyWith(
-        isSpace: isNextSpace,
-      ));
-    } else if (_isPhonicsCharacter(word[i])) {
-      letters.add(getTracingDataPhonics(letter: word[i].toLowerCase()).first.copyWith(
-        isSpace: isNextSpace,
-      ));
-    } else if (_isUpperCasePhonicsCharacter(word[i])) {
-      final uppers = getTracingDataPhonicsUp(letter: word[i].toLowerCase());
-      final newBigSizedUppers = uppers.map((up) => up.copyWith(letterViewSize: Size(300, 300))).first;
-      letters.add(newBigSizedUppers.copyWith(isSpace: isNextSpace));
-    }
-    
-    i++; // Move to the next character
+    return letters;
   }
-  
-  return letters;
-}
 
   List<TraceModel> getTracingDataArabic({required String letter}) {
     ArabicLetters currentLetter = _detectTheCurrentEnum(letter: letter);
@@ -2166,7 +2066,6 @@ List<TraceModel> getTraceWords({
               pointsJsonFile: ShapePointsManger.lUpperShape,
               innerPaintColor: AppColorPhonetics.lightBlueColor4,
               outerPaintColor: AppColorPhonetics.lightBlueColor2),
-   
         ];
       case PhonicsLetters.u:
         return [
@@ -2188,7 +2087,6 @@ List<TraceModel> getTraceWords({
               pointsJsonFile: ShapePointsManger.uUpperShape,
               innerPaintColor: AppColorPhonetics.lightBlueColor4,
               outerPaintColor: AppColorPhonetics.lightBlueColor2),
-   
         ];
       case PhonicsLetters.j:
         return [
@@ -2210,7 +2108,6 @@ List<TraceModel> getTraceWords({
               pointsJsonFile: ShapePointsManger.jUpperShape,
               innerPaintColor: AppColorPhonetics.lightBlueColor4,
               outerPaintColor: AppColorPhonetics.lightBlueColor2),
-   
         ];
 
       case PhonicsLetters.h:
@@ -2233,7 +2130,6 @@ List<TraceModel> getTraceWords({
               pointsJsonFile: ShapePointsManger.hUpperShape,
               innerPaintColor: AppColorPhonetics.lightBlueColor4,
               outerPaintColor: AppColorPhonetics.lightBlueColor2),
-   
         ];
 
       case PhonicsLetters.o:
@@ -2241,7 +2137,6 @@ List<TraceModel> getTraceWords({
         return [
           getTracingDataPhonics(letter: 'o', sizeOfLetter: const Size(200, 200))
               .first,
-    
         ];
 
       case PhonicsLetters.g:
@@ -2261,7 +2156,6 @@ List<TraceModel> getTraceWords({
               pointsJsonFile: ShapePointsManger.gUpperShape,
               innerPaintColor: AppColorPhonetics.lightBlueColor4,
               outerPaintColor: AppColorPhonetics.lightBlueColor2),
-   
         ];
 
       case PhonicsLetters.f:
@@ -2281,7 +2175,6 @@ List<TraceModel> getTraceWords({
               pointsJsonFile: ShapePointsManger.fUpperShape,
               innerPaintColor: AppColorPhonetics.lightBlueColor4,
               outerPaintColor: AppColorPhonetics.lightBlueColor2),
-   
         ];
 
       case PhonicsLetters.d:
@@ -2301,13 +2194,11 @@ List<TraceModel> getTraceWords({
               pointsJsonFile: ShapePointsManger.dUpperShape,
               innerPaintColor: AppColorPhonetics.lightBlueColor4,
               outerPaintColor: AppColorPhonetics.lightBlueColor2),
-        
         ];
       case PhonicsLetters.w:
         return [
           getTracingDataPhonics(letter: 'w', sizeOfLetter: const Size(200, 200))
               .first,
-      
         ];
       case PhonicsLetters.e:
         return [
@@ -2326,7 +2217,6 @@ List<TraceModel> getTraceWords({
               pointsJsonFile: ShapePointsManger.eUpperShape,
               innerPaintColor: AppColorPhonetics.lightBlueColor4,
               outerPaintColor: AppColorPhonetics.lightBlueColor2),
-  
         ];
       case PhonicsLetters.n:
         return [
@@ -2347,7 +2237,6 @@ List<TraceModel> getTraceWords({
               pointsJsonFile: ShapePointsManger.nUpperShape,
               innerPaintColor: AppColorPhonetics.lightBlueColor4,
               outerPaintColor: AppColorPhonetics.lightBlueColor2),
-    
         ];
       case PhonicsLetters.b:
         return [
@@ -2366,7 +2255,6 @@ List<TraceModel> getTraceWords({
               pointsJsonFile: ShapePointsManger.bUpperShape,
               innerPaintColor: AppColorPhonetics.lightBlueColor4,
               outerPaintColor: AppColorPhonetics.lightBlueColor2),
-   
         ];
 
       case PhonicsLetters.s:
@@ -2374,7 +2262,6 @@ List<TraceModel> getTraceWords({
         return [
           getTracingDataPhonics(letter: 's', sizeOfLetter: const Size(200, 200))
               .first,
-    
         ];
       case PhonicsLetters.a:
         return [
@@ -2394,7 +2281,6 @@ List<TraceModel> getTraceWords({
               pointsJsonFile: ShapePointsManger.aUpperShape,
               innerPaintColor: AppColorPhonetics.lightBlueColor4,
               outerPaintColor: AppColorPhonetics.lightBlueColor2),
-    
         ];
       case PhonicsLetters.m:
         return [
@@ -2415,13 +2301,11 @@ List<TraceModel> getTraceWords({
               pointsJsonFile: ShapePointsManger.mUpperShape,
               innerPaintColor: AppColorPhonetics.lightBlueColor4,
               outerPaintColor: AppColorPhonetics.lightBlueColor2),
-    
         ];
       case PhonicsLetters.k:
         return [
           getTracingDataPhonics(letter: 'k', sizeOfLetter: const Size(200, 200))
               .first,
-      
         ];
       case PhonicsLetters.q:
         return [
@@ -2440,31 +2324,26 @@ List<TraceModel> getTraceWords({
               pointsJsonFile: ShapePointsManger.qUpperShape,
               innerPaintColor: AppColorPhonetics.lightBlueColor4,
               outerPaintColor: AppColorPhonetics.lightBlueColor2),
-      
         ];
       case PhonicsLetters.v:
         return [
           getTracingDataPhonics(letter: 'v', sizeOfLetter: const Size(200, 200))
               .first,
-      
         ];
       case PhonicsLetters.x:
         return [
           getTracingDataPhonics(letter: 'x', sizeOfLetter: const Size(200, 200))
               .first,
-   
         ];
       case PhonicsLetters.y:
         return [
           getTracingDataPhonics(letter: 'y', sizeOfLetter: const Size(200, 200))
               .first,
-  
         ];
       case PhonicsLetters.z:
         return [
           getTracingDataPhonics(letter: 'z', sizeOfLetter: const Size(200, 200))
               .first,
-      
         ];
       case PhonicsLetters.t:
         return [
@@ -2485,12 +2364,10 @@ List<TraceModel> getTraceWords({
               pointsJsonFile: ShapePointsManger.tUpperShape,
               innerPaintColor: AppColorPhonetics.lightBlueColor4,
               outerPaintColor: AppColorPhonetics.lightBlueColor2),
-       
         ];
       case PhonicsLetters.c:
         return [
           getTracingDataPhonics(letter: 'c').first,
-       
         ];
       case PhonicsLetters.r:
         return [
@@ -2509,7 +2386,6 @@ List<TraceModel> getTraceWords({
               pointsJsonFile: ShapePointsManger.rUpperShape,
               innerPaintColor: AppColorPhonetics.lightBlueColor4,
               outerPaintColor: AppColorPhonetics.lightBlueColor2),
-     
         ];
       case PhonicsLetters.i:
         return [
@@ -2529,7 +2405,6 @@ List<TraceModel> getTraceWords({
               pointsJsonFile: ShapePointsManger.iUpperShape,
               innerPaintColor: AppColorPhonetics.lightBlueColor4,
               outerPaintColor: AppColorPhonetics.lightBlueColor2),
-   
         ];
       case PhonicsLetters.p:
         return [
@@ -2549,10 +2424,7 @@ List<TraceModel> getTraceWords({
               pointsJsonFile: ShapePointsManger.pUpperShape,
               innerPaintColor: AppColorPhonetics.lightBlueColor4,
               outerPaintColor: AppColorPhonetics.lightBlueColor2),
-   
         ];
-   
-
     }
   }
 }
