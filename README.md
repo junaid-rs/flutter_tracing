@@ -3,7 +3,6 @@
 
 A Flutter game that lets users trace words , characters and geometric shapes to help users practice tracing.
 
----
 
 
 ## Installation
@@ -26,7 +25,7 @@ dependencies:
 flutter pub get
 ```
 
----
+
 
 
 ## Features
@@ -40,7 +39,7 @@ Supports custom colors and tracing options for customization.
 Supports multiple screens
 
 
----
+
 
 
 
@@ -70,7 +69,7 @@ TracingWordGame(
 ```
 
 
-### Tracing Chars
+### Tracing character
 
 The `TracingCharsGame` accepts a list of `TraceCharsModel` objects that will be displayed on the screen. Each `TraceCharsModel` contains a list of `TraceCharModel` objects. The `TraceCharModel` accepts a character (char) and `TraceShapeOptions` for customizing the color and appearance of the traced shape.
 
@@ -173,14 +172,14 @@ TracingGeometricShapesGame(
 
 
 
----
+
 
 ## Customization
 
 You can customize the tracing games by providing different shapes, colors, and configurations. Here are some options:
 
 | Name                         | Type                | Description                                                                 |
-| ---------------------------- | ------------------- | --------------------------------------------------------------------------- |
+| - | - |  |
 | `traceShapeModel`             | List                | A list of traceable shapes or characters                                    |
 | `showAnchor`                  | bool                | Show anchor points for better tracing guidance                              |
 | `tracingListener`             | Function           | A listener that receives tracing state updates (game progress and completion)|
@@ -189,14 +188,14 @@ You can customize the tracing games by providing different shapes, colors, and c
 
 Sure! Here's the updated documentation incorporating the code snippet you've provided:
 
----
+
 
 ### Customizing the Tracing Games
 
 You can customize the tracing games by providing different shapes, colors, and configurations. Here are some options:
 
 | Name                         | Type                | Description                                                                 |
-| ---------------------------- | ------------------- | --------------------------------------------------------------------------- |
+| - | - |  |
 | `traceShapeModel`             | List                | A list of traceable shapes or characters                                    |
 | `showAnchor`                  | bool                | Show anchor points for better tracing guidance                              |
 | `tracingListener`             | Function           | A listener that receives tracing state updates (game progress and completion)|
@@ -229,12 +228,12 @@ You can also attach various callback functions to track the progress and state o
 
 By utilizing these options and callbacks, you can fully customize the behavior and appearance of the tracing game to suit your needs.
 
----
+
 
 ### `TraceShapeOptions` Class Properties:
 
 | Name             | Type               | Description                                                         |
-| ---------------- | ------------------ | ------------------------------------------------------------------- |
+| - |  | - |
 | `outerPaintColor`| Color              | Color of the outer stroke when tracing a shape or character.        |
 | `innerPaintColor`| Color              | Color of the inner stroke or fill when tracing a shape or character.|
 | `dottedColor`    | Color              | Color of the dotted lines for trace instructions.                   |
@@ -256,7 +255,7 @@ class TraceShapeOptions {
 }
 ```
 
----
+
 
 ## Contributions
 
@@ -269,7 +268,7 @@ We are grateful for any contributions! Here's how you can get involved:
 - **Reporting Issues**: Use the GitHub issue tracker to report bugs or suggest improvements.
 - **Discussions**: Share your ideas or ask questions via GitHub Discussions or StackOverflow.
 
----
+
 
 
 
