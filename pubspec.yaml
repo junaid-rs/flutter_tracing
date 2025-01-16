@@ -3,7 +3,8 @@ description: "tracing game"
 version: 1.0.0
 homepage: https://github.com/ZeyadShawki/flutter_tracing
 environment:
-  sdk: '>=2.12.0'
+  sdk: '>=2.12.0 <4.0.0'
+
 
 dependencies:
   flutter:
