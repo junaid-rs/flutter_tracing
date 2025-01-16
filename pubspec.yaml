@@ -1,7 +1,7 @@
 name: tracing
 description: "tracing game"
 version: 0.1.2
-homepage: https://github.com/ZeyadShawki/flutter_tracing/tree/main
+homepage: https://github.com/ZeyadShawki/flutter_tracing
 
 environment:
   sdk: ^3.5.3
