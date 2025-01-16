@@ -44,7 +44,7 @@ Supports multiple screens
 
 
 
-## Example:
+## Example
 
 
 
@@ -174,31 +174,16 @@ TracingGeometricShapesGame(
 
 
 
-## Customization
+
+## Customizing the Tracing Games
 
 You can customize the tracing games by providing different shapes, colors, and configurations. Here are some options:
 
 | Name                         | Type                | Description                                                                 |
-| - | - |  |
+|------------------------------|---------------------|-----------------------------------------------------------------------------|
 | `traceShapeModel`             | List                | A list of traceable shapes or characters                                    |
 | `showAnchor`                  | bool                | Show anchor points for better tracing guidance                              |
-| `tracingListener`             | Function           | A listener that receives tracing state updates (game progress and completion)|
-| `traceShapeOptions`           | TraceShapeOptions   | Options for customizing the appearance of the traced shapes or characters    |
-
-
-Sure! Here's the updated documentation incorporating the code snippet you've provided:
-
-
-
-### Customizing the Tracing Games
-
-You can customize the tracing games by providing different shapes, colors, and configurations. Here are some options:
-
-| Name                         | Type                | Description                                                                 |
-| - | - |  |
-| `traceShapeModel`             | List                | A list of traceable shapes or characters                                    |
-| `showAnchor`                  | bool                | Show anchor points for better tracing guidance                              |
-| `tracingListener`             | Function           | A listener that receives tracing state updates (game progress and completion)|
+| `tracingListener`             | Function            | A listener that receives tracing state updates (game progress and completion)|
 | `traceShapeOptions`           | TraceShapeOptions   | Options for customizing the appearance of the traced shapes or characters    |
 
 ### Available Callbacks
@@ -206,6 +191,7 @@ You can customize the tracing games by providing different shapes, colors, and c
 You can also attach various callback functions to track the progress and state of the tracing game:
 
 - **`onTracingUpdated`**: This callback is triggered when the tracing progress is updated. It provides the current tracing index, which you can use to track the player's progress.
+
     ```dart
     onTracingUpdated: (int currentTracingIndex) async {
         print('/////onTracingUpdated:' + currentTracingIndex.toString());
@@ -213,6 +199,7 @@ You can also attach various callback functions to track the progress and state o
     ```
 
 - **`onGameFinished`**: This callback is triggered when the game is finished. It provides the screen index of the last screen.
+
     ```dart
     onGameFinished: (int screenIndex) async {
         print('/////onGameFinished:' + screenIndex.toString());
@@ -220,6 +207,7 @@ You can also attach various callback functions to track the progress and state o
     ```
 
 - **`onCurrentTracingScreenFinished`**: This callback is triggered when the current tracing screen is completed. It provides the index of the current tracing screen.
+
     ```dart
     onCurrentTracingScreenFinished: (int currentScreenIndex) async {
         print('/////onCurrentTracingScreenFinished:' + currentScreenIndex.toString());
@@ -228,12 +216,12 @@ You can also attach various callback functions to track the progress and state o
 
 By utilizing these options and callbacks, you can fully customize the behavior and appearance of the tracing game to suit your needs.
 
-
+---
 
 ### `TraceShapeOptions` Class Properties:
 
 | Name             | Type               | Description                                                         |
-| - |  | - |
+|------------------|--------------------|---------------------------------------------------------------------|
 | `outerPaintColor`| Color              | Color of the outer stroke when tracing a shape or character.        |
 | `innerPaintColor`| Color              | Color of the inner stroke or fill when tracing a shape or character.|
 | `dottedColor`    | Color              | Color of the dotted lines for trace instructions.                   |
