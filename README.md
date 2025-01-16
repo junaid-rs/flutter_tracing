@@ -5,9 +5,6 @@ A Flutter game that lets users trace words , characters and geometric shapes to 
 
 ---
 
-Certainly! Here’s the updated README section with the installation instructions for the `tracing` package from pub.dev:
-
----
 
 ## Installation
 
