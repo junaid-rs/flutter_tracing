@@ -225,7 +225,7 @@ By utilizing these options and callbacks, you can fully customize the behavior a
 | `outerPaintColor`| Color              | Color of the outer stroke when tracing a shape or character.        |
 | `innerPaintColor`| Color              | Color of the inner stroke or fill when tracing a shape or character.|
 | `dottedColor`    | Color              | Color of the dotted lines for trace instructions.                   |
-| `indexColor`     | Color              | Color for the index or guide points while tracing the shape.        |
+| `indexColor`     | Color              | Color for the index or guide path while tracing the shape.        |
 
 ```dart
 class TraceShapeOptions {
