@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tracing/tracing.dart';
+import 'package:tracing_game/tracing_game.dart';
 
 void main() {
   runApp(const MyApp());

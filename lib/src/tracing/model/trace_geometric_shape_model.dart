@@ -1,5 +1,5 @@
 
-import 'package:tracing/tracing.dart';
+import 'package:tracing_game/tracing_game.dart';
 
 class TraceGeoMetricShapeModel{
   final List<MathShapeWithOption> shapes;

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tracing/src/colors/phonetics_color.dart';
+import 'package:tracing_game/src/colors/phonetics_color.dart';
 
 class TraceShapeOptions {
   final Color outerPaintColor;

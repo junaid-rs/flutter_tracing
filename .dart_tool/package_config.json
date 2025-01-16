@@ -266,13 +266,13 @@
       "languageVersion": "3.1"
     },
     {
-      "name": "tracing",
+      "name": "tracing_game",
       "rootUri": "../",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     }
   ],
-  "generated": "2025-01-16T18:01:48.715275Z",
+  "generated": "2025-01-16T18:10:39.507334Z",
   "generator": "pub",
   "generatorVersion": "3.5.3",
   "flutterRoot": "file:///Users/zeyadshawki/work/flutter_sdk/flutter",

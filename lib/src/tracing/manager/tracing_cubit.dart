@@ -8,9 +8,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:svg_path_parser/svg_path_parser.dart';
-import 'package:tracing/src/tracing/model/letter_paths_model.dart';
-import 'package:tracing/src/tracing/model/trace_model.dart';
-import 'package:tracing/tracing.dart';
+import 'package:tracing_game/src/tracing/model/letter_paths_model.dart';
+import 'package:tracing_game/src/tracing/model/trace_model.dart';
+import 'package:tracing_game/tracing_game.dart';
 
 import '../../get_shape_helper/enum_of_arabic_and_numbers_letters.dart';
 

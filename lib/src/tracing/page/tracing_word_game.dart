@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tracing/src/tracing/phonetics_paint_widget/phonetics_painter.dart';
-import 'package:tracing/tracing.dart';
+import 'package:tracing_game/src/tracing/phonetics_paint_widget/phonetics_painter.dart';
+import 'package:tracing_game/tracing_game.dart';
 
 class TracingWordGame extends StatefulWidget {
   const TracingWordGame({
@@ -182,7 +182,7 @@ class _TracingWordGameState extends State<TracingWordGame> {
                                             .anchorPos!
                                             .dx,
                                         child: Image.asset(
-                                          'packages/tracing/assets/images/position_2_finger.png',
+                                          'packages/tracing_game/assets/images/position_2_finger.png',
                                           height: 50,
                                         ),
                                       ),

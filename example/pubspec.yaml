@@ -1,4 +1,4 @@
-name: tracing_example
+name: tracing_game_example
 description: "Demonstrates how to use the tracing plugin."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -31,9 +31,9 @@ dependencies:
   flutter:
     sdk: flutter
 
-  tracing:
+  tracing_game:
     # When depending on this package from a real application you should use:
-    #   tracing: ^x.y.z
+    #   tracing_game: ^x.y.z
     # See https://dart.dev/tools/pub/dependencies#version-constraints
     # The example app is bundled with the plugin so we use a path dependency on
     # the parent directory to use the current plugin's version.

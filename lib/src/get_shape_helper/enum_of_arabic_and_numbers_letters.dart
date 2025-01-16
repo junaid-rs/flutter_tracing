@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:tracing/src/colors/phonetics_color.dart';
-import 'package:tracing/src/phontics_constants/arabic_shape_paths_blue_unit.dart';
-import 'package:tracing/src/phontics_constants/arabis_shape_paths.dart';
-import 'package:tracing/src/phontics_constants/english_shape_path2.dart';
-import 'package:tracing/src/phontics_constants/math_trace_shape_paths.dart';
-import 'package:tracing/src/phontics_constants/numbers_svg.dart';
-import 'package:tracing/src/phontics_constants/shape_paths.dart';
-import 'package:tracing/src/points_manager/shape_points_manger.dart';
-import 'package:tracing/src/tracing/model/trace_model.dart';
-import 'package:tracing/tracing.dart';
+import 'package:tracing_game/src/colors/phonetics_color.dart';
+import 'package:tracing_game/src/phontics_constants/arabic_shape_paths_blue_unit.dart';
+import 'package:tracing_game/src/phontics_constants/arabis_shape_paths.dart';
+import 'package:tracing_game/src/phontics_constants/english_shape_path2.dart';
+import 'package:tracing_game/src/phontics_constants/math_trace_shape_paths.dart';
+import 'package:tracing_game/src/phontics_constants/numbers_svg.dart';
+import 'package:tracing_game/src/phontics_constants/shape_paths.dart';
+import 'package:tracing_game/src/points_manager/shape_points_manger.dart';
+import 'package:tracing_game/src/tracing/model/trace_model.dart';
+import 'package:tracing_game/tracing_game.dart';
 
 class TypeExtensionTracking {
   ArabicLetters _detectTheCurrentEnum({required String letter}) {
