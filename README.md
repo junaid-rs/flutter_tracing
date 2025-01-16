@@ -43,9 +43,6 @@ Supports multiple screens
 
 
 
-## Usage
-
-To use the tracing game, import the required package and implement the tracing games in your Flutter application.
 
 #### Example:
 
