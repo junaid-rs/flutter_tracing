@@ -42,6 +42,8 @@ Supports multiple screens
 
 ![Screenshot_1737029029](https://github.com/user-attachments/assets/c91963c8-5b73-4a99-a40d-01a3ef6aac31)
 
+![Screenshot_1737052171](https://github.com/user-attachments/assets/ca52957a-5d35-40e5-b163-9bb9ceaf4215)
+
 ![Screenshot_1737029980](https://github.com/user-attachments/assets/7790ef04-043a-4010-bd56-c9cc977786bb)
 
 ![Screenshot_1737029847](https://github.com/user-attachments/assets/9ee025dc-acd3-4f67-baf1-33ce77b4fcd2)
