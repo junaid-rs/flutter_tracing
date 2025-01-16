@@ -47,6 +47,7 @@ Supports multiple screens
 ## Example:
 
 
+---
 
 
 # Tracing Words
@@ -68,7 +69,6 @@ TracingWordGame(
 ),
 ```
 
----
 
 # Tracing Chars
 
