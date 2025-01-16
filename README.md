@@ -251,4 +251,4 @@ class TraceShapeOptions {
 - [GitHub](https://github.com/ZeyadShawki)
 - [LinkedIn](https://www.linkedin.com/in/zeyad-shawki-907331277/)
 
-Thank you for your interest in the Tracing Game package. Happy coding!
+Happy coding!
