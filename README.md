@@ -38,7 +38,7 @@ Interactive game-like experience with feedback.
 Supports custom colors and tracing options for customization.
 Supports multiple screens
 
-![trace-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/029f9757-d40a-4dfd-982d-9346f551876a)
+![ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/a77a55d0-b8f9-4483-8473-acb059866d54)
 
 ![Screenshot_1737029029](https://github.com/user-attachments/assets/c91963c8-5b73-4a99-a40d-01a3ef6aac31)
 
