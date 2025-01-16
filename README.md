@@ -250,6 +250,21 @@ class TraceShapeOptions {
 ```
 
 
+### `MathShapes` Enum:
+
+The `MathShapes` enum provides a set of predefined shapes that can be used in the tracing game. These shapes can be utilized as part of the `traceShapeModel` or other relevant configurations.
+
+```dart
+enum MathShapes {
+  circle,
+  triangle1,
+  triangle2,
+  triangle3,
+  triangle4,
+  rectangle,
+}
+```
+
 
 
 
