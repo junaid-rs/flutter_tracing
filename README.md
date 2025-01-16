@@ -16,7 +16,7 @@ To use the `tracing_game` package in your Flutter project, follow these steps:
 dependencies:
   flutter:
     sdk: flutter
-  tracing_game: ^0.0.2
+  tracing_game: ^0.0.4+1
 ```
 
 3. Run the following command in your terminal to install the package:

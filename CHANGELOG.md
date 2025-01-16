@@ -1,6 +1,11 @@
 # Changelog
 
 # Changelog
+
+## [0.0.4+1]
+### Added
+- update read me.
+
 ## [0.0.4]
 ### Added
 - fixed assets path.
