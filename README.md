@@ -188,7 +188,7 @@ You can customize the tracing games by providing different shapes, colors, and c
 | Name                         | Type                | Description                                                                 |
 |------------------------------|---------------------|-----------------------------------------------------------------------------|
 | `traceShapeModel`             | List                | A list of traceable shapes or characters                                    |
-| `showAnchor`                  | bool                | Show anchor points for better tracing guidance                              |
+| `showAnchor`                  | bool                | Show anchor finger for better tracing guidance                              |
 | `tracingListener`             | Function            | A listener that receives tracing state updates (game progress and completion)|
 | `traceShapeOptions`           | TraceShapeOptions   | Options for customizing the appearance of the traced shapes or characters    |
 
