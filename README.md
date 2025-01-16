@@ -245,27 +245,12 @@ class TraceShapeOptions {
 
 
 
-## Contributions
-
-We welcome contributions to the package! Whether you want to add new shapes, features, or fixes, feel free to fork the repository, make improvements, and create a pull request.
-
-### Getting Involved
-
-We are grateful for any contributions! Here's how you can get involved:
-
-- **Reporting Issues**: Use the GitHub issue tracker to report bugs or suggest improvements.
-- **Discussions**: Share your ideas or ask questions via GitHub Discussions or StackOverflow.
-
-
-
-
-
-## About
+## Author
 
 This project is maintained by the developers listed below.
 
 ### Author:
-- [GitHub] (https://github.com/ZeyadShawki)
+- [GitHub](https://github.com/ZeyadShawki)
 - [LinkedIn](https://www.linkedin.com/in/zeyad-shawki-907331277/)
 
 Thank you for your interest in the Tracing Game package. Happy coding!
