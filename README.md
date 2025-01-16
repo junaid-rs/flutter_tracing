@@ -45,16 +45,15 @@ Supports multiple screens
 
 
 ## Example:
----
 
 
 
 
-## Tracing Words
+# Tracing Words
 
 In the `TracingWordsGame`, you can trace entire English words and numbers, including spaces between words. The `TracingWordGame` accepts a list of `TraceWordModel` objects, where each `TraceWordModel` contains a word (string) and `TraceShapeOptions` for customizing the appearance of the traced shapes.
 
-## Example:
+# Example:
 
 ```dart
 TracingWordGame(
@@ -71,11 +70,11 @@ TracingWordGame(
 
 ---
 
-## Tracing Chars
+# Tracing Chars
 
 The `TracingCharsGame` accepts a list of `TraceCharsModel` objects that will be displayed on the screen. Each `TraceCharsModel` contains a list of `TraceCharModel` objects. The `TraceCharModel` accepts a character (char) and `TraceShapeOptions` for customizing the color and appearance of the traced shape.
 
-## Example:
+# Example:
 
 ```dart
 TracingCharsGame(
@@ -129,13 +128,13 @@ TracingCharsGame(
 
 
 
-## Tracing Geometric Shapes
+# Tracing Geometric Shapes
 
 In this example, the tracing of geometric shapes like rectangles, circles, and triangles (4 types) is supported.
 
 The `TracingGeometricShapesGame` accepts a list of `TraceGeoMetricShapeModel` objects, which will be displayed on the screen. Each `TraceGeoMetricShapeModel` contains a list of `MathShapeWithOption` objects. The `MathShapeWithOption` accepts a `MathShapes` enum to define the type of shape (e.g., circle, rectangle, triangle) and `TraceShapeOptions` to customize the color and appearance of the traced shape.
 
-## Example:
+# Example:
 
 ```dart
 TracingGeometricShapesGame(
