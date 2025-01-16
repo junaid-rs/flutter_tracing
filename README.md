@@ -39,9 +39,15 @@ Supports custom colors and tracing options for customization.
 Supports multiple screens
 
 ![trace-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/029f9757-d40a-4dfd-982d-9346f551876a)
+
 ![Screenshot_1737029029](https://github.com/user-attachments/assets/c91963c8-5b73-4a99-a40d-01a3ef6aac31)
+
+![Screenshot_1737029980](https://github.com/user-attachments/assets/7790ef04-043a-4010-bd56-c9cc977786bb)
+
 ![Screenshot_1737029847](https://github.com/user-attachments/assets/9ee025dc-acd3-4f67-baf1-33ce77b4fcd2)
+
 ![Screenshot_1737029119](https://github.com/user-attachments/assets/9f6567e3-794d-431e-a794-b65290a52cc4)
+
 ![Screenshot_1737029513](https://github.com/user-attachments/assets/368b1934-9da5-44de-a60c-83c137bc9817)
 
 ## Example
