@@ -26,35 +26,26 @@ class _MyAppState extends State<MyApp> {
           title: const Text('Tracing Game'),
         ),
         body: Column(
+          spacing: 3,
           children: [
             Expanded(
               child: TracingCharsGame(
                 showAnchor: true,
                 traceShapeModel: [
-                  TraceCharsModel(chars: [
+               TraceCharsModel(chars: [
                     TraceCharModel(
-                        char: 'ج',
+                        char: 'X',
                         traceShapeOptions: const TraceShapeOptions(
                             innerPaintColor: Colors.orange)),
-                    TraceCharModel(
-                        char: 'f',
-                        traceShapeOptions: const TraceShapeOptions(
-                            innerPaintColor: Colors.orange))
-                  ]),
-                  TraceCharsModel(chars: [
-                    TraceCharModel(
-                        char: 'a',
+                                   TraceCharModel(
+                        char: 'r',
                         traceShapeOptions: const TraceShapeOptions(
                             innerPaintColor: Colors.orange)),
-                    TraceCharModel(
-                        char: 'A',
-                        traceShapeOptions: const TraceShapeOptions(
-                            innerPaintColor: Colors.orange))
-                  ]),  TraceCharsModel(chars: [
-                    TraceCharModel(
-                        char: 'ج',
+                                               TraceCharModel(
+                        char: '2',
                         traceShapeOptions: const TraceShapeOptions(
                             innerPaintColor: Colors.orange)),
+              
                   ])
                 ],
 
@@ -71,34 +62,39 @@ class _MyAppState extends State<MyApp> {
                 },
               ),
             ),
-            TracingGeometricShapesGame(
-              traceGeoMetricShapeModels: [
-                TraceGeoMetricShapeModel(shapes: [
-                  MathShapeWithOption(
-                      shape: MathShapes.circle,
-                      traceShapeOptions: const TraceShapeOptions(
-                          innerPaintColor: Colors.orange)),
-                  MathShapeWithOption(
-                      shape: MathShapes.triangle1,
-                      traceShapeOptions: const TraceShapeOptions(
-                          innerPaintColor: Colors.orange))
-                ]),
-                TraceGeoMetricShapeModel(shapes: [
-                  MathShapeWithOption(
-                      shape: MathShapes.rectangle,
-                      traceShapeOptions: const TraceShapeOptions(
-                          innerPaintColor: Colors.orange)),
-                  MathShapeWithOption(
-                      shape: MathShapes.triangle2,
-                      traceShapeOptions: const TraceShapeOptions(
-                          innerPaintColor: Colors.orange))
-                ]),
-              ],
+            Expanded(
+              child: TracingGeometricShapesGame(
+                traceGeoMetricShapeModels: [
+                  TraceGeoMetricShapeModel(shapes: [
+                    MathShapeWithOption(
+                        shape: MathShapes.circle,
+                        traceShapeOptions: const TraceShapeOptions(
+                            innerPaintColor: Colors.orange)),
+                    MathShapeWithOption(
+                        shape: MathShapes.triangle1,
+                        traceShapeOptions: const TraceShapeOptions(
+                            innerPaintColor: Colors.orange))
+                  ]),
+                  TraceGeoMetricShapeModel(shapes: [
+                    MathShapeWithOption(
+                        shape: MathShapes.triangle3,
+                        traceShapeOptions: const TraceShapeOptions(
+                            innerPaintColor: Colors.orange)),
+                    MathShapeWithOption(
+                        shape: MathShapes.triangle2,
+                        traceShapeOptions: const TraceShapeOptions(
+                            innerPaintColor: Colors.orange))
+                  ]),
+                ],
+              ),
             ),
             Expanded(
               child: TracingWordGame(
                 words: [
-                  TraceWordModel(word: 'I Have',traceShapeOptions: const TraceShapeOptions(
+                  TraceWordModel(word: 'I Love',traceShapeOptions: const TraceShapeOptions(
+                    indexColor: Colors.green
+                  )),
+                   TraceWordModel(word: 'Trace',traceShapeOptions: const TraceShapeOptions(
                     indexColor: Colors.green
                   ))
                 ],

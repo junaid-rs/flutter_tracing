@@ -81,95 +81,99 @@ class _TracingGeometricShapesGameState
               child: 
               Center(
                   child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisSize: MainAxisSize.max,
+                    // crossAxisAlignment: CrossAxisAlignment.end
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: List.generate(
                       state.letterPathsModels.length,
                       (index) {
-
+            
                         return FittedBox(
                           fit: BoxFit.contain,
-                          child: GestureDetector(
-                            onPanStart: (details) {
-                              if (index == state.activeIndex) {
-                                tracingCubit
-                                    .handlePanStart(details.localPosition);
-                              }
-                            },
-                            onPanUpdate: (details) {
-                              if (index == state.activeIndex) {
-                                tracingCubit
-                                    .handlePanUpdate(details.localPosition);
-                              }
-                            },
-                            onPanEnd: (details) {},
-                            child: Stack(
-                              clipBehavior: Clip.none,
-                              children: [
-                                CustomPaint(
-                                  size: tracingCubit.viewSize,
-                                  painter: PhoneticsPainter(
-                                    strokeIndex: state
-                                        .letterPathsModels[index].strokeIndex,
-                                    indexPath: state
-                                        .letterPathsModels[index].letterIndex,
-                                    dottedPath: state
-                                        .letterPathsModels[index].dottedIndex,
-                                    letterColor: state
-                                        .letterPathsModels[index]
-                                        .outerPaintColor,
-                                    letterImage: state
-                                        .letterPathsModels[index]
-                                        .letterImage!,
-                                    paths:
-                                        state.letterPathsModels[index].paths,
-                                    currentDrawingPath: state
-                                        .letterPathsModels[index]
-                                        .currentDrawingPath,
-                                    pathPoints: state.letterPathsModels[index]
-                                        .allStrokePoints
-                                        .expand((p) => p)
-                                        .toList(),
-                                    strokeColor: state
-                                        .letterPathsModels[index]
-                                        .innerPaintColor,
-                                    viewSize: state
-                                        .letterPathsModels[index].viewSize,
-                                    strokePoints: state
-                                            .letterPathsModels[index]
-                                            .allStrokePoints[
-                                        state.letterPathsModels[index]
-                                            .currentStroke],
-                                    strokeWidth: state
-                                        .letterPathsModels[index].strokeWidth,
-                                    dottedColor: state
-                                        .letterPathsModels[index].dottedColor,
-                                    indexColor: state
-                                        .letterPathsModels[index].indexColor,
-                                    indexPathPaintStyle: state
-                                        .letterPathsModels[index]
-                                        .indexPathPaintStyle,
-                                    dottedPathPaintStyle: state
-                                        .letterPathsModels[index]
-                                        .dottedPathPaintStyle,
-                                  ),
-                                ),
-                                  if (state.activeIndex == index && widget.showAnchor)
-                                  Positioned(
-                                    top: state
-                                        .letterPathsModels[state.activeIndex]
-                                        .anchorPos!
-                                        .dy,
-                                    left: state
-                                        .letterPathsModels[state.activeIndex]
-                                        .anchorPos!
-                                        .dx,
-                                    child: Image.asset(
-                                      'packages/tracing/assets/images/position_2_finger.png',
-                                      height: 50,
+                          child: Container(
+                            padding: EdgeInsets.only(right:index< state.letterPathsModels.length-1?50:0),
+                            child: GestureDetector(
+                              onPanStart: (details) {
+                                if (index == state.activeIndex) {
+                                  tracingCubit
+                                      .handlePanStart(details.localPosition);
+                                }
+                              },
+                              onPanUpdate: (details) {
+                                if (index == state.activeIndex) {
+                                  tracingCubit
+                                      .handlePanUpdate(details.localPosition);
+                                }
+                              },
+                              onPanEnd: (details) {},
+                              child: Stack(
+                                clipBehavior: Clip.none,
+                                children: [
+                                  CustomPaint(
+                                    size: tracingCubit.viewSize,
+                                    painter: PhoneticsPainter(
+                                      strokeIndex: state
+                                          .letterPathsModels[index].strokeIndex,
+                                      indexPath: state
+                                          .letterPathsModels[index].letterIndex,
+                                      dottedPath: state
+                                          .letterPathsModels[index].dottedIndex,
+                                      letterColor: state
+                                          .letterPathsModels[index]
+                                          .outerPaintColor,
+                                      letterImage: state
+                                          .letterPathsModels[index]
+                                          .letterImage!,
+                                      paths:
+                                          state.letterPathsModels[index].paths,
+                                      currentDrawingPath: state
+                                          .letterPathsModels[index]
+                                          .currentDrawingPath,
+                                      pathPoints: state.letterPathsModels[index]
+                                          .allStrokePoints
+                                          .expand((p) => p)
+                                          .toList(),
+                                      strokeColor: state
+                                          .letterPathsModels[index]
+                                          .innerPaintColor,
+                                      viewSize: state
+                                          .letterPathsModels[index].viewSize,
+                                      strokePoints: state
+                                              .letterPathsModels[index]
+                                              .allStrokePoints[
+                                          state.letterPathsModels[index]
+                                              .currentStroke],
+                                      strokeWidth: state
+                                          .letterPathsModels[index].strokeWidth,
+                                      dottedColor: state
+                                          .letterPathsModels[index].dottedColor,
+                                      indexColor: state
+                                          .letterPathsModels[index].indexColor,
+                                      indexPathPaintStyle: state
+                                          .letterPathsModels[index]
+                                          .indexPathPaintStyle,
+                                      dottedPathPaintStyle: state
+                                          .letterPathsModels[index]
+                                          .dottedPathPaintStyle,
                                     ),
                                   ),
-                              ],
+                                    if (state.activeIndex == index && widget.showAnchor)
+                                    Positioned(
+                                      top: state
+                                          .letterPathsModels[state.activeIndex]
+                                          .anchorPos!
+                                          .dy,
+                                      left: state
+                                          .letterPathsModels[state.activeIndex]
+                                          .anchorPos!
+                                          .dx,
+                                      child: Image.asset(
+                                        'packages/tracing/assets/images/position_2_finger.png',
+                                        height: 50,
+                                      ),
+                                    ),
+                                ],
+                              ),
                             ),
                           ),
                         );
