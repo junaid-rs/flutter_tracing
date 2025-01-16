@@ -269,10 +269,10 @@
       "name": "tracing",
       "rootUri": "../",
       "packageUri": "lib/",
-      "languageVersion": "3.5"
+      "languageVersion": "2.12"
     }
   ],
-  "generated": "2025-01-16T12:51:00.341444Z",
+  "generated": "2025-01-16T12:55:03.868850Z",
   "generator": "pub",
   "generatorVersion": "3.6.1",
   "flutterRoot": "file:///D:/flutter_windows_3.24.1-stable/flutter",
