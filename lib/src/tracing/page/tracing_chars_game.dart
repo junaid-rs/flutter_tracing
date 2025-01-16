@@ -63,6 +63,9 @@ class _TracingCharsGameState extends State<TracingCharsGame> {
           }
         }
             }, builder: (context, state) {
+                  if(widget.traceShapeModel.isEmpty){
+              return SizedBox();
+            }
           if (state.drawingStates == DrawingStates.loading ||
               state.drawingStates == DrawingStates.initial) {
             return widget. loadingIndictor;

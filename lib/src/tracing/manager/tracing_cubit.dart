@@ -56,13 +56,13 @@ class TracingCubit extends Cubit<TracingState> {
         activeIndex: 0,
         stateOfTracing: state.stateOfTracing,
         traceLetter: TypeExtensionTracking().getTracingData(
-            geometryShapes: state.stateOfTracing == StateOfTracing.traceShapes
+            geometryShapes: state.stateOfTracing == StateOfTracing.traceShapes &&  state.traceGeoMetricShapes!.isNotEmpty
                 ? state.traceGeoMetricShapes![state.index].shapes
                 : null,
-            chars: state.stateOfTracing == StateOfTracing.chars
+            chars: state.stateOfTracing == StateOfTracing.chars &&  state.traceShapeModel!.isNotEmpty
                 ? state.traceShapeModel![state.index].chars
                 : null,
-                word:state.stateOfTracing == StateOfTracing.traceWords
+                word:state.stateOfTracing == StateOfTracing.traceWords &&  state.traceWordModels!.isNotEmpty
                 ? state.traceWordModels![state.index]
                 : null ,
             currentOfTracking: state.stateOfTracing)));

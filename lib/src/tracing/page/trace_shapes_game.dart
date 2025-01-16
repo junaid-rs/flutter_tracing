@@ -65,6 +65,9 @@ class _TracingGeometricShapesGameState
         }
           },
           builder: (context, state) {
+            if(widget.traceGeoMetricShapeModels.isEmpty){
+              return SizedBox();
+            }
             if (state.drawingStates == DrawingStates.loading ||
                 state.drawingStates == DrawingStates.initial) {
               return widget.loadingIndictor;

@@ -139,6 +139,7 @@ class TypeExtensionTracking {
     required StateOfTracing currentOfTracking,
     List<MathShapeWithOption>? geometryShapes,
   }) {
+  
     List<TraceModel> tracingDataList = [];
 
     if (currentOfTracking == StateOfTracing.traceShapes) {
@@ -147,6 +148,9 @@ class TypeExtensionTracking {
     } else if (currentOfTracking == StateOfTracing.traceWords) {
       tracingDataList.addAll(getTraceWords(wordWithOption: word!));
     } else if (currentOfTracking == StateOfTracing.chars) {
+        if(chars==null){
+      return [];
+    }
       for (var char in chars!) {
         final letters = char.char;
 

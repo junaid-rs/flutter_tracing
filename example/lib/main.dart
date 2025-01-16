@@ -50,7 +50,12 @@ class _MyAppState extends State<MyApp> {
                         char: 'A',
                         traceShapeOptions: const TraceShapeOptions(
                             innerPaintColor: Colors.orange))
-                  ]),
+                  ]),  TraceCharsModel(chars: [
+                    TraceCharModel(
+                        char: 'ج',
+                        traceShapeOptions: const TraceShapeOptions(
+                            innerPaintColor: Colors.orange)),
+                  ])
                 ],
 
                 onTracingUpdated: (int currentTracingIndex) async {
