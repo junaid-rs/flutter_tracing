@@ -5,6 +5,33 @@ A Flutter game that lets users trace words , characters and geometric shapes to 
 
 ---
 
+Certainly! Here’s the updated README section with the installation instructions for the `tracing` package from pub.dev:
+
+---
+
+## Installation
+
+To use the `tracing` package in your Flutter project, follow these steps:
+
+1. Open your `pubspec.yaml` file.
+2. Add the `tracing` package to your dependencies section:
+
+```yaml
+dependencies:
+  flutter:
+    sdk: flutter
+  tracing: ^0.0.1
+```
+
+3. Run the following command in your terminal to install the package:
+
+```bash
+flutter pub get
+```
+
+---
+
+
 ## Features
 
 Tracing of English characters (both lower and upper case) and all Arabic characters.
