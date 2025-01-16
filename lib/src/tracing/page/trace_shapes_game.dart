@@ -168,7 +168,7 @@ class _TracingGeometricShapesGameState
                                           .anchorPos!
                                           .dx,
                                       child: Image.asset(
-                                        'packages/tracing/assets/images/position_2_finger.png',
+                                        'packages/tracing_game/assets/images/position_2_finger.png',
                                         height: 50,
                                       ),
                                     ),

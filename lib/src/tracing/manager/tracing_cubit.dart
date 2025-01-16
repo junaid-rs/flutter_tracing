@@ -231,7 +231,7 @@ class TracingCubit extends Cubit<TracingState> {
 
   Future<List<List<Offset>>> _loadPointsFromJson(
       String path, Size viewSize) async {
-    final jsonString = await rootBundle.loadString('packages/tracing/$path');
+    final jsonString = await rootBundle.loadString('packages/tracing_game/$path');
 
     final jsonData = jsonDecode(jsonString);
     final List<List<Offset>> strokePointsList = [];
