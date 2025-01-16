@@ -26,7 +26,7 @@ class _MyAppState extends State<MyApp> {
           title: const Text('Tracing Game'),
         ),
         body: Column(
-          spacing: 3,
+          // spacing: 3,
           children: [
             Expanded(
               child: TracingCharsGame(

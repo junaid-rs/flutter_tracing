@@ -408,6 +408,7 @@ class TypeExtensionTracking {
               innerPaintColor: AppColorPhonetics.lightBlueColor6,
               outerPaintColor: AppColorPhonetics.lightBlueColor5),
         );
+        break;
       case '0':
         listOfTraceModel.add(TraceModel(
             positionIndexPath: const Size(-10, -90),
@@ -784,8 +785,8 @@ class TypeExtensionTracking {
               dottedPath: ArabicShapePathBluUnit.qaafSmallDotted,
               dottedColor: AppColorPhonetics.white,
               indexColor: AppColorPhonetics.grey,
-              indexPath: ArabicShapePathBluUnit.QaaaafSmallIndex,
-              letterPath: ArabicShapePathBluUnit.QaaaafSmallShape,
+              indexPath: ArabicShapePathBluUnit.qaaaafSmallIndex,
+              letterPath: ArabicShapePathBluUnit.qaaaafSmallShape,
               pointsJsonFile: ShapePointsManger.qafSmallShape,
               strokeIndex: 1,
               innerPaintColor: AppColorPhonetics.lightBlueColor5,
@@ -971,9 +972,6 @@ class TypeExtensionTracking {
               outerPaintColor: AppColorPhonetics.lightBlueColor5),
         ];
       case ArabicLetters.gem:
-
-        // TODO RETURN THIS BACK
-
         return [
           TraceModel(
               positionIndexPath: const Size(-10, -18),
@@ -1880,7 +1878,7 @@ class TypeExtensionTracking {
               scaleIndexPath: .6,
               scaledottedPath: .8,
               letterPath: ShapePaths.kshape,
-              pointsJsonFile: ShapePointsManger.KShape,
+              pointsJsonFile: ShapePointsManger.kShape,
               innerPaintColor: AppColorPhonetics.lightBlueColor5,
               outerPaintColor: AppColorPhonetics.lightBlueColor5),
         ];
@@ -2035,7 +2033,7 @@ class TypeExtensionTracking {
               positionIndexPath: const Size(-10, -50),
               scaledottedPath: .8,
               letterPath: ShapePaths.rshape,
-              pointsJsonFile: ShapePointsManger.RShape,
+              pointsJsonFile: ShapePointsManger.rShape,
               innerPaintColor: AppColorPhonetics.lightBlueColor5,
               outerPaintColor: AppColorPhonetics.lightBlueColor5),
         ];
@@ -2176,7 +2174,6 @@ class TypeExtensionTracking {
         ];
 
       case PhonicsLetters.o:
-        // TODO ADD LOWER o LOWER CASE
         return [
           _getTracingDataPhonics(
                   letter: 'o', sizeOfLetter: const Size(200, 200))

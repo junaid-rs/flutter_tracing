@@ -66,9 +66,9 @@ class ShapePointsManger {
 
     static const cShape = '$englishBase/C_PointsInfo.json';
 
-    static const RShape = '$englishBase/R_PointsInfo.json';
+    static const rShape = '$englishBase/R_PointsInfo.json';
 
-    static const KShape = '$englishBase/K_PointsInfo.json';
+    static const kShape = '$englishBase/K_PointsInfo.json';
     static const qShape = '$englishBase/q_PointsInfo.json';
     static const vShape = '$englishBase/v_PointsInfo.json';
     static const xShape = '$englishBase/x_PointsInfo.json';
