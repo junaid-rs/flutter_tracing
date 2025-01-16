@@ -245,9 +245,7 @@ class TraceShapeOptions {
 
 
 
-## Author
 
-This project is maintained by the developers listed below.
 
 ### Author:
 - [GitHub](https://github.com/ZeyadShawki)
