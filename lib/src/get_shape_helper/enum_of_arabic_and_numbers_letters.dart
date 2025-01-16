@@ -151,7 +151,7 @@ class TypeExtensionTracking {
         if(chars==null){
       return [];
     }
-      for (var char in chars!) {
+      for (var char in chars) {
         final letters = char.char;
 
         // Detect the type of letter and add the corresponding tracing data
@@ -764,11 +764,11 @@ class TypeExtensionTracking {
               strokeWidth: 35,
               disableDividedStrokes: true,
               distanceToCheck: 20,
-              dottedPath: ArabicShapePathBluUnit.QaaaafBigShapeDotted,
+              dottedPath: ArabicShapePathBluUnit.qaaaafBigShapeDotted,
               dottedColor: AppColorPhonetics.white,
               indexColor: AppColorPhonetics.grey,
-              indexPath: ArabicShapePathBluUnit.QaaaafBigIndex,
-              letterPath: ArabicShapePathBluUnit.QaaaafBigShape,
+              indexPath: ArabicShapePathBluUnit.qaaaafBigIndex,
+              letterPath: ArabicShapePathBluUnit.qaaaafBigShape,
               pointsJsonFile: ShapePointsManger.qafBigShape,
               strokeIndex: 1,
               innerPaintColor: AppColorPhonetics.lightBlueColor5,

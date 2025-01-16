@@ -64,7 +64,7 @@ class _TracingWordGameState extends State<TracingWordGame> {
         }
       }, builder: (context, state) {
                if(widget.words.isEmpty){
-              return SizedBox();
+              return const SizedBox();
             }
         if (state.drawingStates == DrawingStates.loading ||
             state.drawingStates == DrawingStates.initial) {
