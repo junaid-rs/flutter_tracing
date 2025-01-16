@@ -1,95 +1,264 @@
-# tracing
 
-A new Flutter FFI plugin project.
+# Tracing Game Flutter Package
 
-## Getting Started
+A Flutter game that lets users trace words , characters and geometric shapes to help users practice tracing.
 
-This project is a starting point for a Flutter
-[FFI plugin](https://flutter.dev/to/ffi-package),
-a specialized package that includes native code directly invoked with Dart FFI.
+---
 
-## Project structure
+## Features
 
-This template uses the following structure:
+Tracing of English characters (both lower and upper case) and all Arabic characters.
+Tracing of English numbers from 1 to 10.
+Tracing of English words and numbers.
+Tracing of geometric shapes like rectangles, circles, and triangles.
+Interactive game-like experience with feedback.
+Supports custom colors and tracing options for customization.
+Supports multiple screens
+---
 
-* `src`: Contains the native source code, and a CmakeFile.txt file for building
-  that source code into a dynamic library.
 
-* `lib`: Contains the Dart code that defines the API of the plugin, and which
-  calls into the native code using `dart:ffi`.
 
-* platform folders (`android`, `ios`, `windows`, etc.): Contains the build files
-  for building and bundling the native code library with the platform application.
 
-## Building and bundling native code
+## Usage
 
-The `pubspec.yaml` specifies FFI plugins as follows:
+To use the tracing game, import the required package and implement the tracing games in your Flutter application.
 
-```yaml
-  plugin:
-    platforms:
-      some_platform:
-        ffiPlugin: true
+#### Example:
+
+
+
+
+
+## Tracing Words
+
+In the `TracingWordsGame`, you can trace entire English words and numbers, including spaces between words. The `TracingWordGame` accepts a list of `TraceWordModel` objects, where each `TraceWordModel` contains a word (string) and `TraceShapeOptions` for customizing the appearance of the traced shapes.
+
+## Example:
+
+```dart
+TracingWordGame(
+  words: [
+    TraceWordModel(
+      word: 'I Have',
+      traceShapeOptions: const TraceShapeOptions(
+        indexColor: Colors.green,
+      ),
+    ),
+  ],
+),
 ```
 
-This configuration invokes the native build for the various target platforms
-and bundles the binaries in Flutter applications using these FFI plugins.
+---
 
-This can be combined with dartPluginClass, such as when FFI is used for the
-implementation of one platform in a federated plugin:
+## Tracing Chars
 
-```yaml
-  plugin:
-    implements: some_other_plugin
-    platforms:
-      some_platform:
-        dartPluginClass: SomeClass
-        ffiPlugin: true
+The `TracingCharsGame` accepts a list of `TraceCharsModel` objects that will be displayed on the screen. Each `TraceCharsModel` contains a list of `TraceCharModel` objects. The `TraceCharModel` accepts a character (char) and `TraceShapeOptions` for customizing the color and appearance of the traced shape.
+
+## Example:
+
+```dart
+TracingCharsGame(
+  showAnchor: true,
+  traceShapeModel: [
+    TraceCharsModel(chars: [
+      TraceCharModel(
+        char: 'F',
+        traceShapeOptions: const TraceShapeOptions(
+          innerPaintColor: Colors.orange
+        ),
+      ),
+      TraceCharModel(
+        char: 'f',
+        traceShapeOptions: const TraceShapeOptions(
+          innerPaintColor: Colors.orange
+        ),
+      ),
+    ]),
+    TraceCharsModel(chars: [
+      TraceCharModel(
+        char: 'a',
+        traceShapeOptions: const TraceShapeOptions(
+          innerPaintColor: Colors.orange
+        ),
+      ),
+      TraceCharModel(
+        char: 'A',
+        traceShapeOptions: const TraceShapeOptions(
+          innerPaintColor: Colors.orange
+        ),
+      ),
+    ]),
+    TraceCharsModel(chars: [
+      TraceCharModel(
+        char: '1',
+        traceShapeOptions: const TraceShapeOptions(
+          innerPaintColor: Colors.orange
+        ),
+      ),
+      TraceCharModel(
+        char: '4',
+        traceShapeOptions: const TraceShapeOptions(
+          innerPaintColor: Colors.orange
+        ),
+      ),
+    ]),
+  ],
+),
 ```
 
-A plugin can have both FFI and method channels:
 
-```yaml
-  plugin:
-    platforms:
-      some_platform:
-        pluginClass: SomeName
-        ffiPlugin: true
+
+## Tracing Geometric Shapes
+
+In this example, the tracing of geometric shapes like rectangles, circles, and triangles (4 types) is supported.
+
+The `TracingGeometricShapesGame` accepts a list of `TraceGeoMetricShapeModel` objects, which will be displayed on the screen. Each `TraceGeoMetricShapeModel` contains a list of `MathShapeWithOption` objects. The `MathShapeWithOption` accepts a `MathShapes` enum to define the type of shape (e.g., circle, rectangle, triangle) and `TraceShapeOptions` to customize the color and appearance of the traced shape.
+
+## Example:
+
+```dart
+TracingGeometricShapesGame(
+  traceGeoMetricShapeModels: [
+    TraceGeoMetricShapeModel(shapes: [
+      MathShapeWithOption(
+        shape: MathShapes.circle,
+        traceShapeOptions: const TraceShapeOptions(
+          innerPaintColor: Colors.orange
+        ),
+      ),
+      MathShapeWithOption(
+        shape: MathShapes.triangle1,
+        traceShapeOptions: const TraceShapeOptions(
+          innerPaintColor: Colors.orange
+        ),
+      ),
+    ]),
+    TraceGeoMetricShapeModel(shapes: [
+      MathShapeWithOption(
+        shape: MathShapes.rectangle,
+        traceShapeOptions: const TraceShapeOptions(
+          innerPaintColor: Colors.orange
+        ),
+      ),
+      MathShapeWithOption(
+        shape: MathShapes.triangle2,
+        traceShapeOptions: const TraceShapeOptions(
+          innerPaintColor: Colors.orange
+        ),
+      ),
+    ]),
+  ],
+),
 ```
 
-The native build systems that are invoked by FFI (and method channel) plugins are:
 
-* For Android: Gradle, which invokes the Android NDK for native builds.
-  * See the documentation in android/build.gradle.
-* For iOS and MacOS: Xcode, via CocoaPods.
-  * See the documentation in ios/tracing.podspec.
-  * See the documentation in macos/tracing.podspec.
-* For Linux and Windows: CMake.
-  * See the documentation in linux/CMakeLists.txt.
-  * See the documentation in windows/CMakeLists.txt.
 
-## Binding to native code
+---
 
-To use the native code, bindings in Dart are needed.
-To avoid writing these by hand, they are generated from the header file
-(`src/tracing.h`) by `package:ffigen`.
-Regenerate the bindings by running `dart run ffigen --config ffigen.yaml`.
+## Customization
 
-## Invoking native code
+You can customize the tracing games by providing different shapes, colors, and configurations. Here are some options:
 
-Very short-running native functions can be directly invoked from any isolate.
-For example, see `sum` in `lib/tracing.dart`.
+| Name                         | Type                | Description                                                                 |
+| ---------------------------- | ------------------- | --------------------------------------------------------------------------- |
+| `traceShapeModel`             | List                | A list of traceable shapes or characters                                    |
+| `showAnchor`                  | bool                | Show anchor points for better tracing guidance                              |
+| `tracingListener`             | Function           | A listener that receives tracing state updates (game progress and completion)|
+| `traceShapeOptions`           | TraceShapeOptions   | Options for customizing the appearance of the traced shapes or characters    |
 
-Longer-running functions should be invoked on a helper isolate to avoid
-dropping frames in Flutter applications.
-For example, see `sumAsync` in `lib/tracing.dart`.
 
-## Flutter help
+Sure! Here's the updated documentation incorporating the code snippet you've provided:
 
-For help getting started with Flutter, view our
-[online documentation](https://docs.flutter.dev), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+---
 
-The plugin project was generated without specifying the `--platforms` flag, so no platforms are currently supported.
-To add platforms, run `flutter create -t plugin_ffi --platforms <platforms> .` in this directory.
-You can also find a detailed instruction on how to add platforms in the `pubspec.yaml` at https://flutter.dev/to/pubspec-plugin-platforms.
+### Customizing the Tracing Games
+
+You can customize the tracing games by providing different shapes, colors, and configurations. Here are some options:
+
+| Name                         | Type                | Description                                                                 |
+| ---------------------------- | ------------------- | --------------------------------------------------------------------------- |
+| `traceShapeModel`             | List                | A list of traceable shapes or characters                                    |
+| `showAnchor`                  | bool                | Show anchor points for better tracing guidance                              |
+| `tracingListener`             | Function           | A listener that receives tracing state updates (game progress and completion)|
+| `traceShapeOptions`           | TraceShapeOptions   | Options for customizing the appearance of the traced shapes or characters    |
+
+### Available Callbacks
+
+You can also attach various callback functions to track the progress and state of the tracing game:
+
+- **`onTracingUpdated`**: This callback is triggered when the tracing progress is updated. It provides the current tracing index, which you can use to track the player's progress.
+    ```dart
+    onTracingUpdated: (int currentTracingIndex) async {
+        print('/////onTracingUpdated:' + currentTracingIndex.toString());
+    }
+    ```
+
+- **`onGameFinished`**: This callback is triggered when the game is finished. It provides the screen index of the last screen.
+    ```dart
+    onGameFinished: (int screenIndex) async {
+        print('/////onGameFinished:' + screenIndex.toString());
+    }
+    ```
+
+- **`onCurrentTracingScreenFinished`**: This callback is triggered when the current tracing screen is completed. It provides the index of the current tracing screen.
+    ```dart
+    onCurrentTracingScreenFinished: (int currentScreenIndex) async {
+        print('/////onCurrentTracingScreenFinished:' + currentScreenIndex.toString());
+    }
+    ```
+
+By utilizing these options and callbacks, you can fully customize the behavior and appearance of the tracing game to suit your needs.
+
+---
+
+### `TraceShapeOptions` Class Properties:
+
+| Name             | Type               | Description                                                         |
+| ---------------- | ------------------ | ------------------------------------------------------------------- |
+| `outerPaintColor`| Color              | Color of the outer stroke when tracing a shape or character.        |
+| `innerPaintColor`| Color              | Color of the inner stroke or fill when tracing a shape or character.|
+| `dottedColor`    | Color              | Color of the dotted lines for trace instructions.                   |
+| `indexColor`     | Color              | Color for the index or guide points while tracing the shape.        |
+
+```dart
+class TraceShapeOptions {
+  final Color outerPaintColor;
+  final Color innerPaintColor;
+  final Color dottedColor;
+  final Color indexColor;
+
+  const TraceShapeOptions({
+    this.dottedColor = AppColorPhonetics.grey,
+    this.indexColor = Colors.black,
+    this.innerPaintColor = AppColorPhonetics.lightBlueColor6,
+    this.outerPaintColor = AppColorPhonetics.lightBlueColor5,
+  });
+}
+```
+
+---
+
+## Contributions
+
+We welcome contributions to the package! Whether you want to add new shapes, features, or fixes, feel free to fork the repository, make improvements, and create a pull request.
+
+### Getting Involved
+
+We are grateful for any contributions! Here's how you can get involved:
+
+- **Reporting Issues**: Use the GitHub issue tracker to report bugs or suggest improvements.
+- **Discussions**: Share your ideas or ask questions via GitHub Discussions or StackOverflow.
+
+---
+
+
+
+## About
+
+This project is maintained by the developers listed below.
+
+### Author:
+- [GitHub] (https://github.com/ZeyadShawki)
+- [LinkedIn](https://www.linkedin.com/in/zeyad-shawki-907331277/)
+
+Thank you for your interest in the Tracing Game package. Happy coding!

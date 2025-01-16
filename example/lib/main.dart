@@ -22,70 +22,98 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-          appBar: AppBar(
-            title: const Text('Tracing Game'),
-          ),
-          body: Container(
-            child: Column(
-              children: [
-                Expanded(
-                  child: TracingGeometricShapesGame(
-                    traceGeoMetricShapeModels: [
-                      TraceGeoMetricShapeModel(shapes: [
-                        MathShapeWithOption(
-                            shape: MathShapes.rectangle,
-                            traceShapeOptions: TraceShapeOptions(
-                                innerPaintColor: Colors.orange))
-                      ]),
-                    ],
-                    tracingListener: (buildContext, tracingState) async {
-                      if (tracingState.drawingStates ==
-                          DrawingStates.finishedCurrentScreen) {
-                        await Future.delayed(Duration(seconds: 1));
-                      } else if (tracingState.drawingStates ==
-                          DrawingStates.gameFinished) {
-                        print('finished the game');
-                      }
-                    },
-                  ),
-                ),
+        appBar: AppBar(
+          title: const Text('Tracing Game'),
+        ),
+        body: Column(
+          children: [
+            Expanded(
+              child: TracingCharsGame(
+                showAnchor: true,
+                traceShapeModel: [
+                  TraceCharsModel(chars: [
+                    TraceCharModel(
+                        char: 'ج',
+                        traceShapeOptions: const TraceShapeOptions(
+                            innerPaintColor: Colors.orange)),
+                    TraceCharModel(
+                        char: 'f',
+                        traceShapeOptions: const TraceShapeOptions(
+                            innerPaintColor: Colors.orange))
+                  ]),
+                  TraceCharsModel(chars: [
+                    TraceCharModel(
+                        char: 'a',
+                        traceShapeOptions: const TraceShapeOptions(
+                            innerPaintColor: Colors.orange)),
+                    TraceCharModel(
+                        char: 'A',
+                        traceShapeOptions: const TraceShapeOptions(
+                            innerPaintColor: Colors.orange))
+                  ]),
+                ],
 
-                Expanded(
-                  child: TracingCharsGame(
-                    traceShapeModel: [
-                      TraceCharsModel(chars: [
-                        TraceCharModel(
-                            char: 's',
-                            traceShapeOptions: TraceShapeOptions(
-                                innerPaintColor: Colors.orange))
-                      ]),
-                    ],
-                    tracingListener: (buildContext, tracingState) async {
-                      if (tracingState.drawingStates ==
-                          DrawingStates.finishedCurrentScreen) {
-                        await Future.delayed(Duration(seconds: 1));
-                      } else if (tracingState.drawingStates ==
-                          DrawingStates.gameFinished) {
-                        print('finished the game');
-                      }
-                    },
-                  ),
-                ),
-                // TracingWordGame(
-                //   words: ['Flutter'],
-                //   tracingListener: (buildContext, tracingState) async {
-                //     if (tracingState.drawingStates ==
-                //         DrawingStates.finishedCurrentScreen) {
-                //       await Future.delayed(Duration(seconds: 1));
-                //     } else if (tracingState.drawingStates ==
-                //         DrawingStates.gameFinished) {
-                //       print('finished the game');
-                //     }
-                //   },
-                // ),
+                onTracingUpdated: (int currentTracingIndex) async {
+                  print('/////onTracingUpdated:' +
+                      currentTracingIndex.toString());
+                },
+                onGameFinished: (int screenIndex) async {
+                  print('/////onGameFinished:' + screenIndex.toString());
+                },
+                onCurrentTracingScreenFinished: (int currentScreenIndex) async {
+                  print('/////onCurrentTracingScreenFinished:' +
+                      currentScreenIndex.toString());
+                },
+              ),
+            ),
+            TracingGeometricShapesGame(
+              traceGeoMetricShapeModels: [
+                TraceGeoMetricShapeModel(shapes: [
+                  MathShapeWithOption(
+                      shape: MathShapes.circle,
+                      traceShapeOptions: const TraceShapeOptions(
+                          innerPaintColor: Colors.orange)),
+                  MathShapeWithOption(
+                      shape: MathShapes.triangle1,
+                      traceShapeOptions: const TraceShapeOptions(
+                          innerPaintColor: Colors.orange))
+                ]),
+                TraceGeoMetricShapeModel(shapes: [
+                  MathShapeWithOption(
+                      shape: MathShapes.rectangle,
+                      traceShapeOptions: const TraceShapeOptions(
+                          innerPaintColor: Colors.orange)),
+                  MathShapeWithOption(
+                      shape: MathShapes.triangle2,
+                      traceShapeOptions: const TraceShapeOptions(
+                          innerPaintColor: Colors.orange))
+                ]),
               ],
             ),
-          )),
+            Expanded(
+              child: TracingWordGame(
+                words: [
+                  TraceWordModel(word: 'I Have',traceShapeOptions: const TraceShapeOptions(
+                    indexColor: Colors.green
+                  ))
+                ],
+                      onTracingUpdated: (int currentTracingIndex) async {
+                  print('/////onTracingUpdated:' +
+                      currentTracingIndex.toString());
+                },
+                onGameFinished: (int screenIndex) async {
+                  print('/////onGameFinished:' + screenIndex.toString());
+                },
+                onCurrentTracingScreenFinished: (int currentScreenIndex) async {
+                  print('/////onCurrentTracingScreenFinished:' +
+                      currentScreenIndex.toString());
+                },
+
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

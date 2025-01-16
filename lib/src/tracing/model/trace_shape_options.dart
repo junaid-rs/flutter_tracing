@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tracing/src/colors/phonetics_color.dart';
 
 class TraceShapeOptions {
   final Color outerPaintColor;
@@ -7,9 +8,9 @@ class TraceShapeOptions {
   final Color indexColor;
 
  const TraceShapeOptions({
-    this.indexColor = Colors.black,
-    this.outerPaintColor = Colors.red,
-    this.innerPaintColor = Colors.blue,
-    this.dottedColor = Colors.amber,
+           this.dottedColor= AppColorPhonetics.grey,
+           this.  indexColor= Colors.black,
+            this. innerPaintColor= AppColorPhonetics.lightBlueColor6,
+            this. outerPaintColor= AppColorPhonetics.lightBlueColor5
   });
 }

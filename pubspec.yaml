@@ -1,5 +1,5 @@
 name: tracing
-description: "A new Flutter FFI plugin project."
+description: "tracing game"
 version: 0.0.1
 homepage:
 
@@ -56,6 +56,16 @@ flutter:
   
     - packages/tracing/assets/images/position_2_finger.png
 # // lower english
+
+    - packages/tracing/assets/phontics_assets_points/english_phontics/d_lower_PointsInfo.json
+    - packages/tracing/assets/phontics_assets_points/english_phontics/f_lower_PointsInfo.json
+    - packages/tracing/assets/phontics_assets_points/english_phontics/b_lower_PointsInfo.json
+    - packages/tracing/assets/phontics_assets_points/english_phontics/j_lower_PointsInfo.json
+    - packages/tracing/assets/phontics_assets_points/english_phontics/l_lower_PointsInfo.json
+    - packages/tracing/assets/phontics_assets_points/english_phontics/h_lower_PointsInfo.json
+    - packages/tracing/assets/phontics_assets_points/english_phontics/u_lower_PointsInfo.json
+
+
     - packages/tracing/assets/phontics_assets_points/english_phontics/A_PointsInfo.json
     - packages/tracing/assets/phontics_assets_points/english_phontics/b_lower_PointsInfo.json
     - packages/tracing/assets/phontics_assets_points/english_phontics/C_PointsInfo.json

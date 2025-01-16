@@ -1,4 +1,3 @@
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
@@ -9,7 +8,7 @@ class TraceModel {
   // final Color pointColor;
   final String dottedPath;
   final String indexPath;
-final bool? disableDivededStrokes;
+final bool? disableDividedStrokes;
   final Color outerPaintColor;
   final Color innerPaintColor;
   final Color dottedColor;
@@ -19,8 +18,8 @@ final bool? disableDivededStrokes;
 final PaintingStyle? indexPathPaintStyle;
 final PaintingStyle? dottedPathPaintStyle;
 
-final Size? poitionIndexPath;
-final Size? poitionDottedPath;
+final Size? positionIndexPath;
+final Size? positionDottedPath;
 final double? scaleIndexPath;
 final double? scaledottedPath;
 final double? distanceToCheck;
@@ -30,12 +29,12 @@ final double? strokeIndex;
         this.isSpace=false,
 
     this.letterViewSize=const Size(200,200),
-    this.disableDivededStrokes,
+    this.disableDividedStrokes,
     this.strokeIndex,
     this.distanceToCheck,
     this.scaledottedPath,
     this.scaleIndexPath,
-    this.poitionIndexPath,    this.poitionDottedPath,
+    this.positionIndexPath,    this.positionDottedPath,
 
     this.indexPathPaintStyle,
     this.dottedPathPaintStyle,
@@ -58,7 +57,7 @@ final double? strokeIndex;
     String? pointsJsonFile,
     String? dottedPath,
     String? indexPath,
-    bool? disableDivededStrokes,
+    bool? disableDividedStrokes,
     Color? outerPaintColor,
     Color? innerPaintColor,
     Color? dottedColor,
@@ -66,8 +65,8 @@ final double? strokeIndex;
     double? strokeWidth,
     PaintingStyle? indexPathPaintStyle,
     PaintingStyle? dottedPathPaintStyle,
-    Size? poitionIndexPath,
-    Size? poitionDottedPath,
+    Size? positionIndexPath,
+    Size? positionDottedPath,
     double? scaleIndexPath,
     double? scaledottedPath,
     double? distanceToCheck,
@@ -80,7 +79,7 @@ final double? strokeIndex;
       pointsJsonFile: pointsJsonFile ?? this.pointsJsonFile,
       dottedPath: dottedPath ?? this.dottedPath,
       indexPath: indexPath ?? this.indexPath,
-      disableDivededStrokes: disableDivededStrokes ?? this.disableDivededStrokes,
+      disableDividedStrokes: disableDividedStrokes ?? this.disableDividedStrokes,
       outerPaintColor: outerPaintColor ?? this.outerPaintColor,
       innerPaintColor: innerPaintColor ?? this.innerPaintColor,
       dottedColor: dottedColor ?? this.dottedColor,
@@ -88,8 +87,8 @@ final double? strokeIndex;
       strokeWidth: strokeWidth ?? this.strokeWidth,
       indexPathPaintStyle: indexPathPaintStyle ?? this.indexPathPaintStyle,
       dottedPathPaintStyle: dottedPathPaintStyle ?? this.dottedPathPaintStyle,
-      poitionIndexPath: poitionIndexPath ?? this.poitionIndexPath,
-      poitionDottedPath: poitionDottedPath ?? this.poitionDottedPath,
+      positionIndexPath: positionIndexPath ?? this.positionIndexPath,
+      positionDottedPath: positionDottedPath ?? this.positionDottedPath,
       scaleIndexPath: scaleIndexPath ?? this.scaleIndexPath,
       scaledottedPath: scaledottedPath ?? this.scaledottedPath,
       distanceToCheck: distanceToCheck ?? this.distanceToCheck,

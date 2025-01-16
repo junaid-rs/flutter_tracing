@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:math' as math;
 
 import 'package:bloc/bloc.dart';
@@ -8,9 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:svg_path_parser/svg_path_parser.dart';
-import 'package:tracing/src/enums/shape_enums.dart';
 import 'package:tracing/src/tracing/model/letter_paths_model.dart';
-import 'package:tracing/src/tracing/model/trace_geometric_shape_model.dart';
 import 'package:tracing/src/tracing/model/trace_model.dart';
 import 'package:tracing/tracing.dart';
 
@@ -20,10 +19,19 @@ part 'tracing_state.dart';
 
 class TracingCubit extends Cubit<TracingState> {
   TracingCubit({
+    List<TraceWordModel>? traceWordModels,
+    List<TraceGeoMetricShapeModel>? traceGeoMetricShapeModel,
     List<TraceCharsModel>? traceShapeModel,
     required StateOfTracing stateOfTracing,
-    List<TraceGeoMetricShapeModel>? traceGeoMetricShapeModel,
   }) : super(TracingState(
+          numberOfScreens: stateOfTracing == StateOfTracing.chars
+              ? traceShapeModel!.length
+              : stateOfTracing == StateOfTracing.traceShapes
+                  ? traceGeoMetricShapeModel!.length
+                  : stateOfTracing == StateOfTracing.traceWords
+                      ? traceWordModels!.length
+                      : 0,
+          traceWordModels: traceWordModels,
           traceGeoMetricShapes: traceGeoMetricShapeModel,
           traceShapeModel: traceShapeModel,
           index: 0,
@@ -36,8 +44,7 @@ class TracingCubit extends Cubit<TracingState> {
   updateIndex() {
     int index = state.index;
     index++;
-
-    if (index < state.letterPathsModels.length) {
+    if (index < state.numberOfScreens) {
       emit(state.copyWith(index: index, drawingStates: DrawingStates.loaded));
       updateTheTraceLetter();
     }
@@ -52,10 +59,12 @@ class TracingCubit extends Cubit<TracingState> {
             geometryShapes: state.stateOfTracing == StateOfTracing.traceShapes
                 ? state.traceGeoMetricShapes![state.index].shapes
                 : null,
-            chars: state.stateOfTracing == StateOfTracing.chars ||
-                    state.stateOfTracing == StateOfTracing.traceWords
+            chars: state.stateOfTracing == StateOfTracing.chars
                 ? state.traceShapeModel![state.index].chars
                 : null,
+                word:state.stateOfTracing == StateOfTracing.traceWords
+                ? state.traceWordModels![state.index]
+                : null ,
             currentOfTracking: state.stateOfTracing)));
     await loadAssets();
   }
@@ -80,12 +89,12 @@ class TracingCubit extends Cubit<TracingState> {
       final dottedPathTransformed = _applyTransformationForOtherPathsDotted(
           dottedPath,
           viewSize,
-          letterModel.poitionDottedPath,
+          letterModel.positionDottedPath,
           letterModel.scaledottedPath);
       final indexPathTransformed = _applyTransformationForOtherPathsIndex(
           dottedIndexPath,
           viewSize,
-          letterModel.poitionIndexPath,
+          letterModel.positionIndexPath,
           letterModel.scaleIndexPath);
 
       final allStrokePoints = await _loadPointsFromJson(
@@ -98,7 +107,7 @@ class TracingCubit extends Cubit<TracingState> {
       model.add(LetterPathsModel(
           isSpace: letterModel.isSpace,
           viewSize: letterModel.letterViewSize,
-          disableDivededStrokes: letterModel.disableDivededStrokes,
+          disableDivededStrokes: letterModel.disableDividedStrokes,
           strokeIndex: letterModel.strokeIndex,
           strokeWidth: letterModel.strokeWidth,
           dottedIndex: dottedPathTransformed,
@@ -245,7 +254,7 @@ class TracingCubit extends Cubit<TracingState> {
     if (!isTracingStartPoint(position)) {
       return;
     }
-
+emit(state.copyWith(drawingStates: DrawingStates.tracing));
     final currentStrokePoints =
         state.letterPathsModels[state.activeIndex].allStrokePoints[
             state.letterPathsModels[state.activeIndex].currentStroke];
@@ -268,7 +277,7 @@ class TracingCubit extends Cubit<TracingState> {
 
           completeStroke();
           return;
-        } else {}
+        }
       }
     } else if (state
             .letterPathsModels[state.activeIndex].currentStrokeProgress ==
@@ -299,7 +308,7 @@ class TracingCubit extends Cubit<TracingState> {
           emit(state.copyWith(
             letterPathsModels: state.letterPathsModels,
           ));
-        } else {}
+        } 
       }
     }
   }
@@ -396,12 +405,8 @@ class TracingCubit extends Cubit<TracingState> {
           activeIndex: (state.activeIndex + 1),
           letterPathsModels: state.letterPathsModels,
         ));
-      } else if (state.stateOfTracing == StateOfTracing.traceShapes
-          ? state.index == state.traceGeoMetricShapes!.length - 1
-          : state.stateOfTracing == StateOfTracing.traceShapes ||
-                  state.stateOfTracing == StateOfTracing.traceWords
-              ? state.index == state.traceShapeModel!.length - 1
-              : false) {
+      } else if (state.index == state.numberOfScreens-1 ) {
+    
         emit(state.copyWith(
             activeIndex: (state.activeIndex),
             letterPathsModels: state.letterPathsModels,

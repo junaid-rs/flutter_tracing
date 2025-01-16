@@ -1,5 +1,4 @@
 
-import 'package:tracing/src/tracing/model/trace_shape_options.dart';
 import 'package:tracing/tracing.dart';
 
 class TraceGeoMetricShapeModel{

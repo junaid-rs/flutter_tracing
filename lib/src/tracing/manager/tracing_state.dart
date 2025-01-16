@@ -5,6 +5,8 @@ enum DrawingStates {
   initial,
   loading,
   loaded,
+    tracing,
+
   gameFinished,
   finishedCurrentScreen
 }
@@ -12,6 +14,7 @@ enum DrawingStates {
 // ignore: must_be_immutable
 class TracingState extends Equatable {
   final List<TraceCharsModel>? traceShapeModel;
+  final List<TraceWordModel>? traceWordModels;
   final List<TraceGeoMetricShapeModel>? traceGeoMetricShapes;
 
   final List<TraceModel> traceLetter;
@@ -21,12 +24,15 @@ class TracingState extends Equatable {
   final int index;
   final Size viewSize;
   final StateOfTracing stateOfTracing;
- 
-  TracingState({  
-      required this.stateOfTracing,
-       this.traceGeoMetricShapes,
 
-     this.traceShapeModel,
+  final int numberOfScreens;
+
+  TracingState({
+    required this.stateOfTracing,
+    this.numberOfScreens = 0,
+    this.traceWordModels,
+    this.traceGeoMetricShapes,
+    this.traceShapeModel,
     this.viewSize = const Size(0, 0),
     this.letterPathsModels = const [],
     required this.traceLetter,
@@ -36,6 +42,9 @@ class TracingState extends Equatable {
   });
 
   TracingState copyWith({
+    int? numberOfScreens,
+    List<TraceWordModel>? traceWordModels,
+    List<TraceGeoMetricShapeModel>? traceGeoMetricShapes,
     List<TraceCharsModel>? traceShapeModel,
     Size? viewSize,
     DrawingStates? drawingStates,
@@ -45,12 +54,11 @@ class TracingState extends Equatable {
     List<TraceModel>? traceLetter,
     StateOfTracing? stateOfTracing,
     int? activeIndex,
-       List<TraceGeoMetricShapeModel>? traceGeoMetricShapes,
-
   }) {
     return TracingState(
+      numberOfScreens: numberOfScreens ?? this.numberOfScreens,
       traceGeoMetricShapes: traceGeoMetricShapes ?? this.traceGeoMetricShapes,
-
+      traceWordModels: traceWordModels ?? this.traceWordModels,
       traceShapeModel: traceShapeModel ?? this.traceShapeModel,
       index: index ?? this.index,
       stateOfTracing: stateOfTracing ?? this.stateOfTracing,
@@ -63,8 +71,10 @@ class TracingState extends Equatable {
 
   TracingState clearData() {
     return TracingState(
+      numberOfScreens: numberOfScreens,
       traceGeoMetricShapes: traceGeoMetricShapes,
       traceShapeModel: traceShapeModel,
+      traceWordModels: traceWordModels,
       letterPathsModels: letterPathsModels,
       drawingStates: DrawingStates.initial,
       stateOfTracing: stateOfTracing,
@@ -74,7 +84,9 @@ class TracingState extends Equatable {
   }
 
   @override
-  List<Object?> get props => [traceShapeModel,
+  List<Object?> get props => [
+        traceWordModels,
+        traceShapeModel,
         drawingStates,
         viewSize,
         stateOfTracing,

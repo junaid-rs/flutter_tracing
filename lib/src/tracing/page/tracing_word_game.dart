@@ -1,31 +1,40 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tracing/src/enums/shape_enums.dart';
 import 'package:tracing/src/tracing/phonetics_paint_widget/phonetics_painter.dart';
 import 'package:tracing/tracing.dart';
 
-import '../manager/tracing_cubit.dart';
+class TracingWordGame extends StatefulWidget {
+  const TracingWordGame({
+    super.key,
+    required this.words,
+    this.loadingIndictor = const CircularProgressIndicator(),
+    this.showAnchor = true,
+    this.onTracingUpdated,
+    this.onGameFinished,
+    this.onCurrentTracingScreenFinished,
+  });
+  final List<TraceWordModel> words;
 
-class TracingCharsGame extends StatefulWidget {
-  const TracingCharsGame({super.key, required this.traceShapeModel, required this.tracingListener,  this.loadingIndictor=const CircularProgressIndicator(), });
-  final List<TraceCharsModel> traceShapeModel;
-  final  Future<void> Function(BuildContext, TracingState) tracingListener;
+  final Future<void> Function(int index)? onTracingUpdated;
+  final Future<void> Function(int index)? onGameFinished;
+  final Future<void> Function(int index)? onCurrentTracingScreenFinished;
+
   final Widget loadingIndictor;
+  final bool showAnchor;
   @override
-  State<StatefulWidget> createState() => _TracingCharsGameState();
+  State<StatefulWidget> createState() => _TracingWordGameState();
 }
 
-class _TracingCharsGameState extends State<TracingCharsGame> {
+class _TracingWordGameState extends State<TracingWordGame> {
   late TracingCubit tracingCubit;
 
   @override
   void initState() {
     super.initState();
+
     tracingCubit = TracingCubit(
-      stateOfTracing:StateOfTracing.chars ,
-      traceShapeModel: widget.traceShapeModel,
+      stateOfTracing: StateOfTracing.traceWords,
+      traceWordModels: widget.words,
     );
   }
 
@@ -33,30 +42,39 @@ class _TracingCharsGameState extends State<TracingCharsGame> {
   Widget build(BuildContext context) {
     // Adjust bottom padding based on platform and navigation bar presence
     return BlocProvider(
-        create: (context) => tracingCubit,
-        child: BlocConsumer<TracingCubit, TracingState>(
-            listener:(context, stateOfGame)async {
-           await   widget.tracingListener(context,stateOfGame);
-                 if (stateOfGame.drawingStates == DrawingStates.finishedCurrentScreen) {
-     
-                if (context.mounted) {
-                  
-                  context.read<TracingCubit>().updateIndex();
-                
-              
-      
-                }}
-            }, builder: (context, state) {
-          if (state.drawingStates == DrawingStates.loading ||
-              state.drawingStates == DrawingStates.initial) {
-            return widget. loadingIndictor;
+      create: (context) => tracingCubit,
+      child: BlocConsumer<TracingCubit, TracingState>(
+          listener: (context, stateOfGame) async {
+        if (stateOfGame.drawingStates == DrawingStates.tracing) {
+          if (widget.onTracingUpdated != null) {
+            await widget.onTracingUpdated!(stateOfGame.activeIndex);
           }
+        } else if (stateOfGame.drawingStates ==
+            DrawingStates.finishedCurrentScreen) {
+          if (widget.onCurrentTracingScreenFinished != null) {
+            await widget.onCurrentTracingScreenFinished!(stateOfGame.index + 1);
+          }
+          if (context.mounted) {
+            tracingCubit.updateIndex();
+          }
+        } else if (stateOfGame.drawingStates == DrawingStates.gameFinished) {
+          if (widget.onGameFinished != null) {
+            await widget.onGameFinished!(stateOfGame.index);
+          }
+        }
+      }, builder: (context, state) {
+        if (state.drawingStates == DrawingStates.loading ||
+            state.drawingStates == DrawingStates.initial) {
+          return widget.loadingIndictor;
+        }
 
-      
-          return Container(
-            child: Center(
-              child: FittedBox(
-                child: Container(
+        return FittedBox(
+          child: Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                FittedBox(
                   child: Center(
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -68,35 +86,32 @@ class _TracingCharsGameState extends State<TracingCharsGame> {
                           return Container(
                             height:
                                 state.letterPathsModels[index].viewSize.width,
-                            width: state
-                                .letterPathsModels[index].viewSize.height,
-                        
-                            // color: Colors.green,
+                            width:
+                                state.letterPathsModels[index].viewSize.height,
+                            margin: state.letterPathsModels[index].isSpace
+                                ? const EdgeInsets.only(right: 150)
+                                : EdgeInsets.zero,
                             child: FittedBox(
                               fit: BoxFit.contain,
                               child: GestureDetector(
                                 onPanStart: (details) {
                                   if (index == state.activeIndex) {
-                                    tracingCubit.handlePanStart(
-                                        details.localPosition);
+                                    tracingCubit
+                                        .handlePanStart(details.localPosition);
                                   }
                                 },
                                 onPanUpdate: (details) {
                                   if (index == state.activeIndex) {
-                                    tracingCubit.handlePanUpdate(
-                                        details.localPosition);
+                                    tracingCubit
+                                        .handlePanUpdate(details.localPosition);
                                   }
                                 },
                                 onPanEnd: (details) {},
                                 child: Stack(
-                                  // fit: StackFit.loose,
                                   clipBehavior: Clip.none,
-                                  // alignment: Alignment.b,
                                   children: [
                                     CustomPaint(
-                                      // isComplex: true,
                                       size: tracingCubit.viewSize,
-              
                                       painter: PhoneticsPainter(
                                         strokeIndex: state
                                             .letterPathsModels[index]
@@ -127,8 +142,7 @@ class _TracingCharsGameState extends State<TracingCharsGame> {
                                             .letterPathsModels[index]
                                             .innerPaintColor,
                                         viewSize: state
-                                            .letterPathsModels[index]
-                                            .viewSize,
+                                            .letterPathsModels[index].viewSize,
                                         strokePoints: state
                                                 .letterPathsModels[index]
                                                 .allStrokePoints[
@@ -151,7 +165,8 @@ class _TracingCharsGameState extends State<TracingCharsGame> {
                                             .dottedPathPaintStyle,
                                       ),
                                     ),
-                                    if (state.activeIndex == index)
+                                    if (state.activeIndex == index &&
+                                        widget.showAnchor)
                                       Positioned(
                                         top: state
                                             .letterPathsModels[
@@ -178,9 +193,11 @@ class _TracingCharsGameState extends State<TracingCharsGame> {
                     ),
                   ),
                 ),
-              ),
+              ],
             ),
-          );
-        }));
+          ),
+        );
+      }),
+    );
   }
 }
