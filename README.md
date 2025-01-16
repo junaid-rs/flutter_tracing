@@ -40,6 +40,7 @@ Supports custom colors and tracing options for customization.
 Supports multiple screens
 
 
+---
 
 
 
@@ -47,7 +48,6 @@ Supports multiple screens
 ## Example:
 
 
----
 
 
 # Tracing Words
