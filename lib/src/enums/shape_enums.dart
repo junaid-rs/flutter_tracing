@@ -1,4 +1,3 @@
-
 enum ArabicLetters {
   gem,
   sen,
@@ -46,6 +45,7 @@ enum MathShapes {
   triangle4,
 
   rectangle,
+  square,
 }
 
 enum PhonicsLetters {

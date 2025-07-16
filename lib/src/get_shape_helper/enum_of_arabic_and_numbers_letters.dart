@@ -139,7 +139,6 @@ class TypeExtensionTracking {
     required StateOfTracing currentOfTracking,
     List<MathShapeWithOption>? geometryShapes,
   }) {
-  
     List<TraceModel> tracingDataList = [];
 
     if (currentOfTracking == StateOfTracing.traceShapes) {
@@ -148,16 +147,16 @@ class TypeExtensionTracking {
     } else if (currentOfTracking == StateOfTracing.traceWords) {
       tracingDataList.addAll(getTraceWords(wordWithOption: word!));
     } else if (currentOfTracking == StateOfTracing.chars) {
-        if(chars==null){
-      return [];
-    }
+      if (chars == null) {
+        return [];
+      }
       for (var char in chars) {
         final letters = char.char;
 
         // Detect the type of letter and add the corresponding tracing data
         if (_isArabicCharacter(letters)) {
-          tracingDataList
-              .addAll(_getTracingDataArabic(letter: letters).map((e)=>e.copyWith(
+          tracingDataList.addAll(
+              _getTracingDataArabic(letter: letters).map((e) => e.copyWith(
                     innerPaintColor: char.traceShapeOptions.innerPaintColor,
                     outerPaintColor: char.traceShapeOptions.outerPaintColor,
                     indexColor: char.traceShapeOptions.indexColor,
@@ -580,6 +579,27 @@ class TypeExtensionTracking {
               pointsJsonFile: ShapePointsManger.triangle4Shape,
               innerPaintColor: AppColorPhonetics.lightBlueColor5,
               outerPaintColor: Colors.transparent),
+        ];
+      case MathShapes.square:
+        return [
+          TraceModel(
+            letterViewSize: const Size(150, 150),
+            positionIndexPath: const Size(-10, 10),
+            positionDottedPath: const Size(-2, -2),
+            scaledottedPath: .9,
+            scaleIndexPath: 1,
+            indexPathPaintStyle: PaintingStyle.stroke,
+            dottedPath: MathTraceShapePaths.squareDottedPath,
+            dottedColor: Colors.black,
+            indexColor: AppColorPhonetics.grey,
+            indexPath: MathTraceShapePaths.squareIndexPath,
+            letterPath: MathTraceShapePaths.squareShapePath,
+            strokeWidth: 35,
+            strokeIndex: 1,
+            pointsJsonFile: ShapePointsManger.squareShape,
+            innerPaintColor: AppColorPhonetics.lightBlueColor5,
+            outerPaintColor: Colors.transparent,
+          ),
         ];
     }
   }
@@ -2077,7 +2097,6 @@ class TypeExtensionTracking {
               innerPaintColor: AppColorPhonetics.lightBlueColor5,
               outerPaintColor: AppColorPhonetics.lightBlueColor5),
         ];
-    
     }
   }
 

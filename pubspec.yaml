@@ -1,10 +1,9 @@
 name: tracing_game
 description: "tracing game"
-version: 0.0.4+1  
+version: 0.0.4+1
 homepage: https://github.com/ZeyadShawki/flutter_tracing
 environment:
-  sdk: '>=3.0.0 <4.0.0'
-
+  sdk: ">=3.0.0 <4.0.0"
 
 dependencies:
   flutter:
@@ -18,7 +17,7 @@ dependencies:
 dev_dependencies:
   ffi: ^2.1.0
   ffigen: ^11.0.0
-  
+
   flutter_test:
     sdk: flutter
   flutter_lints: ^4.0.0
@@ -41,12 +40,10 @@ flutter:
   #
   # Please refer to README.md for a detailed explanation.
 
-
   # To add assets to your plugin package, add an assets section, like this:
   assets:
-  
     - packages/tracing_game/assets/images/position_2_finger.png
-# // lower english
+    # // lower english
 
     - packages/tracing_game/assets/phontics_assets_points/english_phontics/d_lower_PointsInfo.json
     - packages/tracing_game/assets/phontics_assets_points/english_phontics/f_lower_PointsInfo.json
@@ -55,7 +52,6 @@ flutter:
     - packages/tracing_game/assets/phontics_assets_points/english_phontics/l_lower_PointsInfo.json
     - packages/tracing_game/assets/phontics_assets_points/english_phontics/h_lower_PointsInfo.json
     - packages/tracing_game/assets/phontics_assets_points/english_phontics/u_lower_PointsInfo.json
-
 
     - packages/tracing_game/assets/phontics_assets_points/english_phontics/A_PointsInfo.json
     - packages/tracing_game/assets/phontics_assets_points/english_phontics/b_lower_PointsInfo.json
@@ -81,7 +77,7 @@ flutter:
     - packages/tracing_game/assets/phontics_assets_points/english_phontics/x_PointsInfo.json
     - packages/tracing_game/assets/phontics_assets_points/english_phontics/y_PointsInfo.json
     - packages/tracing_game/assets/phontics_assets_points/english_phontics/z_PointsInfo.json
-# // arabic 
+    # // arabic
     - packages/tracing_game/assets/phontics_assets_points/arabic_phontics/alef_big_PointsInfo.json
     - packages/tracing_game/assets/phontics_assets_points/arabic_phontics/3en_big_PointsInfo.json
     - packages/tracing_game/assets/phontics_assets_points/arabic_phontics/3en_small_PointsInfo.json
@@ -132,7 +128,7 @@ flutter:
     - packages/tracing_game/assets/phontics_assets_points/arabic_phontics/ya2_small_PointsInfo.json
     - packages/tracing_game/assets/phontics_assets_points/arabic_phontics/zal_big_PointsInfo.json
     - packages/tracing_game/assets/phontics_assets_points/arabic_phontics/zen_big_PointsInfo.json
-# /// upper english
+    # /// upper english
     - packages/tracing_game/assets/phontics_assets_points/english_upper_phonetics/A_PointsInfo.json
     - packages/tracing_game/assets/phontics_assets_points/english_upper_phonetics/B_PointsInfo.json
     - packages/tracing_game/assets/phontics_assets_points/english_upper_phonetics/D_PointsInfo.json
@@ -153,14 +149,15 @@ flutter:
     - packages/tracing_game/assets/phontics_assets_points/english_upper_phonetics/T_PointsInfo.json
     - packages/tracing_game/assets/phontics_assets_points/english_upper_phonetics/U_PointsInfo.json
     - packages/tracing_game/assets/phontics_assets_points/english_upper_phonetics/W_PointsInfo.json
-# /////math
+    # /////math
     - packages/tracing_game/assets/phontics_assets_points/math_shapes/circle_PointsInfo.json
     - packages/tracing_game/assets/phontics_assets_points/math_shapes/rectangle_PointsInfo.json
     - packages/tracing_game/assets/phontics_assets_points/math_shapes/triangle1_PointsInfo.json
     - packages/tracing_game/assets/phontics_assets_points/math_shapes/triangle2_PointsInfo.json
     - packages/tracing_game/assets/phontics_assets_points/math_shapes/triangle3_PointsInfo.json
     - packages/tracing_game/assets/phontics_assets_points/math_shapes/triangle4_PointsInfo.json
-# /// numbers
+    - packages/tracing_game/assets/phontics_assets_points/math_shapes/square_PointsInfo.json
+    # /// numbers
     - packages/tracing_game/assets/phontics_assets_points/numbers_phontics/0_PointsInfo.json
     - packages/tracing_game/assets/phontics_assets_points/numbers_phontics/1_PointsInfo.json
     - packages/tracing_game/assets/phontics_assets_points/numbers_phontics/2_PointsInfo.json
