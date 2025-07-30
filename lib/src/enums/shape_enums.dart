@@ -46,6 +46,12 @@ enum MathShapes {
 
   rectangle,
   square,
+  diamond,
+  heart,
+  hexagon,
+  oval,
+  pentagon,
+  star,
 }
 
 enum PhonicsLetters {

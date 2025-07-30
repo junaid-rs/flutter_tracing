@@ -601,6 +601,132 @@ class TypeExtensionTracking {
             outerPaintColor: Colors.transparent,
           ),
         ];
+      case MathShapes.diamond:
+        return [
+          TraceModel(
+            letterViewSize: const Size(150, 150),
+            positionIndexPath: const Size(-10, 10),
+            positionDottedPath: const Size(-2, -2),
+            scaledottedPath: .9,
+            scaleIndexPath: 1,
+            indexPathPaintStyle: PaintingStyle.stroke,
+            dottedPath: MathTraceShapePaths.diamondDottedPath,
+            dottedColor: Colors.black,
+            indexColor: AppColorPhonetics.grey,
+            indexPath: MathTraceShapePaths.diamondIndexPath,
+            letterPath: MathTraceShapePaths.diamondShapePath,
+            strokeWidth: 35,
+            strokeIndex: 1,
+            pointsJsonFile: ShapePointsManger.diamondShape,
+            innerPaintColor: AppColorPhonetics.lightBlueColor5,
+            outerPaintColor: Colors.transparent,
+          ),
+        ];
+      case MathShapes.heart:
+        return [
+          TraceModel(
+            letterViewSize: const Size(150, 150),
+            positionIndexPath: const Size(-10, 10),
+            positionDottedPath: const Size(-2, -2),
+            scaledottedPath: .9,
+            scaleIndexPath: 1,
+            indexPathPaintStyle: PaintingStyle.stroke,
+            dottedPath: MathTraceShapePaths.heartDottedPath,
+            dottedColor: Colors.black,
+            indexColor: AppColorPhonetics.grey,
+            indexPath: MathTraceShapePaths.heartIndexPath,
+            letterPath: MathTraceShapePaths.heartShapePath,
+            strokeWidth: 35,
+            strokeIndex: 1,
+            pointsJsonFile: ShapePointsManger.heartShape,
+            innerPaintColor: AppColorPhonetics.lightBlueColor5,
+            outerPaintColor: Colors.transparent,
+          ),
+        ];
+      case MathShapes.hexagon:
+        return [
+          TraceModel(
+            letterViewSize: const Size(150, 150),
+            positionIndexPath: const Size(-10, 10),
+            positionDottedPath: const Size(-2, -2),
+            scaledottedPath: .9,
+            scaleIndexPath: 1,
+            indexPathPaintStyle: PaintingStyle.stroke,
+            dottedPath: MathTraceShapePaths.hexagonDottedPath,
+            dottedColor: Colors.black,
+            indexColor: AppColorPhonetics.grey,
+            indexPath: MathTraceShapePaths.hexagonIndexPath,
+            letterPath: MathTraceShapePaths.hexagonShapePath,
+            strokeWidth: 35,
+            strokeIndex: 1,
+            pointsJsonFile: ShapePointsManger.hexagonShape,
+            innerPaintColor: AppColorPhonetics.lightBlueColor5,
+            outerPaintColor: Colors.transparent,
+          ),
+        ];
+      case MathShapes.oval:
+        return [
+          TraceModel(
+            letterViewSize: const Size(150, 150),
+            positionIndexPath: const Size(-10, 10),
+            positionDottedPath: const Size(-2, -2),
+            scaledottedPath: .9,
+            scaleIndexPath: 1,
+            indexPathPaintStyle: PaintingStyle.stroke,
+            dottedPath: MathTraceShapePaths.ovalDottedPath,
+            dottedColor: Colors.black,
+            indexColor: AppColorPhonetics.grey,
+            indexPath: MathTraceShapePaths.ovalIndexPath,
+            letterPath: MathTraceShapePaths.ovalShapePath,
+            strokeWidth: 35,
+            strokeIndex: 1,
+            pointsJsonFile: ShapePointsManger.ovalShape,
+            innerPaintColor: AppColorPhonetics.lightBlueColor5,
+            outerPaintColor: Colors.transparent,
+          ),
+        ];
+      case MathShapes.pentagon:
+        return [
+          TraceModel(
+            letterViewSize: const Size(150, 150),
+            positionIndexPath: const Size(-10, 10),
+            positionDottedPath: const Size(-2, -2),
+            scaledottedPath: .9,
+            scaleIndexPath: 1,
+            indexPathPaintStyle: PaintingStyle.stroke,
+            dottedPath: MathTraceShapePaths.pentagonDottedPath,
+            dottedColor: Colors.black,
+            indexColor: AppColorPhonetics.grey,
+            indexPath: MathTraceShapePaths.pentagonIndexPath,
+            letterPath: MathTraceShapePaths.pentagonShapePath,
+            strokeWidth: 35,
+            strokeIndex: 1,
+            pointsJsonFile: ShapePointsManger.pentagonShape,
+            innerPaintColor: AppColorPhonetics.lightBlueColor5,
+            outerPaintColor: Colors.transparent,
+          ),
+        ];
+      case MathShapes.star:
+        return [
+          TraceModel(
+            letterViewSize: const Size(150, 150),
+            positionIndexPath: const Size(-10, 10),
+            positionDottedPath: const Size(-2, -2),
+            scaledottedPath: .9,
+            scaleIndexPath: 1,
+            indexPathPaintStyle: PaintingStyle.stroke,
+            dottedPath: MathTraceShapePaths.starDottedPath,
+            dottedColor: Colors.black,
+            indexColor: AppColorPhonetics.grey,
+            indexPath: MathTraceShapePaths.starIndexPath,
+            letterPath: MathTraceShapePaths.starShapePath,
+            strokeWidth: 35,
+            strokeIndex: 1,
+            pointsJsonFile: ShapePointsManger.starShape,
+            innerPaintColor: AppColorPhonetics.lightBlueColor5,
+            outerPaintColor: Colors.transparent,
+          ),
+        ];
     }
   }
 

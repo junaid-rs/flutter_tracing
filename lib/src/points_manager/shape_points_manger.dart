@@ -181,4 +181,10 @@ class ShapePointsManger {
   static const triangle3Shape = '$mathShapeBase/triangle3_PointsInfo.json';
   static const triangle4Shape = '$mathShapeBase/triangle4_PointsInfo.json';
   static const squareShape = '$mathShapeBase/square_PointsInfo.json';
+  static const diamondShape = '$mathShapeBase/diamond_PointsInfo.json';
+  static const heartShape = '$mathShapeBase/heart_PointsInfo.json';
+  static const hexagonShape = '$mathShapeBase/hexagon_PointsInfo.json';
+  static const ovalShape = '$mathShapeBase/oval_PointsInfo.json';
+  static const pentagonShape = '$mathShapeBase/pentagon_PointsInfo.json';
+  static const starShape = '$mathShapeBase/star_PointsInfo.json';
 }

@@ -32,23 +32,21 @@ class _MyAppState extends State<MyApp> {
               child: TracingCharsGame(
                 showAnchor: true,
                 traceShapeModel: [
-               TraceCharsModel(chars: [
+                  TraceCharsModel(chars: [
                     TraceCharModel(
                         char: 'X',
                         traceShapeOptions: const TraceShapeOptions(
                             innerPaintColor: Colors.orange)),
-                                   TraceCharModel(
+                    TraceCharModel(
                         char: 'r',
                         traceShapeOptions: const TraceShapeOptions(
                             innerPaintColor: Colors.orange)),
-                                               TraceCharModel(
+                    TraceCharModel(
                         char: '2',
                         traceShapeOptions: const TraceShapeOptions(
                             innerPaintColor: Colors.orange)),
-              
                   ])
                 ],
-
                 onTracingUpdated: (int currentTracingIndex) async {
                   print('/////onTracingUpdated:' +
                       currentTracingIndex.toString());
@@ -67,23 +65,9 @@ class _MyAppState extends State<MyApp> {
                 traceGeoMetricShapeModels: [
                   TraceGeoMetricShapeModel(shapes: [
                     MathShapeWithOption(
-                        shape: MathShapes.circle,
+                        shape: MathShapes.square,
                         traceShapeOptions: const TraceShapeOptions(
                             innerPaintColor: Colors.orange)),
-                    MathShapeWithOption(
-                        shape: MathShapes.triangle1,
-                        traceShapeOptions: const TraceShapeOptions(
-                            innerPaintColor: Colors.orange))
-                  ]),
-                  TraceGeoMetricShapeModel(shapes: [
-                    MathShapeWithOption(
-                        shape: MathShapes.triangle3,
-                        traceShapeOptions: const TraceShapeOptions(
-                            innerPaintColor: Colors.orange)),
-                    MathShapeWithOption(
-                        shape: MathShapes.triangle2,
-                        traceShapeOptions: const TraceShapeOptions(
-                            innerPaintColor: Colors.orange))
                   ]),
                 ],
               ),
@@ -91,14 +75,16 @@ class _MyAppState extends State<MyApp> {
             Expanded(
               child: TracingWordGame(
                 words: [
-                  TraceWordModel(word: 'I Love',traceShapeOptions: const TraceShapeOptions(
-                    indexColor: Colors.green
-                  )),
-                   TraceWordModel(word: 'Trace',traceShapeOptions: const TraceShapeOptions(
-                    indexColor: Colors.green
-                  ))
+                  TraceWordModel(
+                      word: 'I Love',
+                      traceShapeOptions:
+                          const TraceShapeOptions(indexColor: Colors.green)),
+                  TraceWordModel(
+                      word: 'Trace',
+                      traceShapeOptions:
+                          const TraceShapeOptions(indexColor: Colors.green))
                 ],
-                      onTracingUpdated: (int currentTracingIndex) async {
+                onTracingUpdated: (int currentTracingIndex) async {
                   print('/////onTracingUpdated:' +
                       currentTracingIndex.toString());
                 },
@@ -109,7 +95,6 @@ class _MyAppState extends State<MyApp> {
                   print('/////onCurrentTracingScreenFinished:' +
                       currentScreenIndex.toString());
                 },
-
               ),
             ),
           ],

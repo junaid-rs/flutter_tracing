@@ -157,6 +157,12 @@ flutter:
     - packages/tracing_game/assets/phontics_assets_points/math_shapes/triangle3_PointsInfo.json
     - packages/tracing_game/assets/phontics_assets_points/math_shapes/triangle4_PointsInfo.json
     - packages/tracing_game/assets/phontics_assets_points/math_shapes/square_PointsInfo.json
+    - packages/tracing_game/assets/phontics_assets_points/math_shapes/diamond_PointsInfo.json
+    - packages/tracing_game/assets/phontics_assets_points/math_shapes/heart_PointsInfo.json
+    - packages/tracing_game/assets/phontics_assets_points/math_shapes/hexagon_PointsInfo.json
+    - packages/tracing_game/assets/phontics_assets_points/math_shapes/oval_PointsInfo.json
+    - packages/tracing_game/assets/phontics_assets_points/math_shapes/pentagon_PointsInfo.json
+    - packages/tracing_game/assets/phontics_assets_points/math_shapes/star_PointsInfo.json
     # /// numbers
     - packages/tracing_game/assets/phontics_assets_points/numbers_phontics/0_PointsInfo.json
     - packages/tracing_game/assets/phontics_assets_points/numbers_phontics/1_PointsInfo.json
